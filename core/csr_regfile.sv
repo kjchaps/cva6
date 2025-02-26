@@ -170,7 +170,11 @@ module csr_regfile
     // RVFI
     output rvfi_probes_csr_t rvfi_csr_o,
     //jvt output
-    output jvt_t jvt_o
+    output jvt_t jvt_o,
+		// sub8 source format - EX STAGE
+		output logic [2:0] fpu_sub8_SSFT,
+		// sub8 destination format - EX STAGE
+		output logic [2:0] fpu_sub8_SEFT
 );
 
   localparam logic [63:0] SMODE_STATUS_READ_MASK = ariane_pkg::smode_status_read_mask(CVA6Cfg);
@@ -194,6 +198,11 @@ module csr_regfile
     logic [CVA6Cfg.VMIDW-1:0] vmid;
     logic [CVA6Cfg.PPNW-1:0]  ppn;
   } hgatp_t;
+
+		// sub8 source format 
+		logic [2:0] fpu_sub8_SSFT;
+		// sub8 destination format 
+		logic [2:0] fpu_sub8_SEFT;
 
   // internal signal to keep track of access exceptions
   logic read_access_exception, update_access_exception, privilege_violation;
