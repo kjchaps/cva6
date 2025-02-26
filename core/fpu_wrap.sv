@@ -308,13 +308,25 @@ module fpu_wrap
         end
 
 				///////////// sub8 instruction area here
+				//
 				FSFADD: begin
 					fpu_op_d    = fpnew_pkg::ADD;
           replicate_c = 1'b1; // second operand is in C
-					//here get types from CSR or see if in decode
+					//types should already be retrieved and set from CSR in decode
 				end
+				//SUB8 Subtraction
+				FSFSUB: begin
+          fpu_op_d     = fpnew_pkg::ADD;
+          fpu_op_mod_d = 1'b1;
+          replicate_c  = 1'b1;  // second operand is in C
+        end
+        // SUB8 Multiplication
+        FSFMUL:    fpu_op_d = fpnew_pkg::MUL;
+        // SUB8 Division
+        FSFDIV:    fpu_op_d = fpnew_pkg::DIV;
 
 
+				//for min and max in decode decide if 001 or 000, then maybe share? or check encoding correct before sending
 
 
 
