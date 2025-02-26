@@ -1044,6 +1044,10 @@ module csr_regfile
             fcsr_d[7:0] = csr_wdata[7:0];  // ignore writes to reserved space
             // this instruction has side-effects
             flush_o = 1'b1;
+						if (sset_instr_decoded) begin // SEFT and SSFT bits (20:15) if SSET
+      				fcsr_d.seft = csr_wdata[20:18];  // SEFT (bits 20–18)
+      				fcsr_d.ssft = csr_wdata[17:15];  // SSFT (bits 17–15)
+							end
           end else begin
             update_access_exception = 1'b1;
           end
