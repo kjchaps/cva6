@@ -34,7 +34,10 @@ module fpu_wrap
     output logic       [CVA6Cfg.TRANS_ID_BITS-1:0] fpu_trans_id_o,
     output logic       [         CVA6Cfg.FLen-1:0] result_o,
     output logic                                   fpu_valid_o,
-    output exception_t                             fpu_exception_o
+    output exception_t                             fpu_exception_o,
+
+		input  logic       [                      2:0] fpu_sub8_srcfmt_i,
+    input  logic       [                      2:0] fpu_sub8_dstfmt_i
 );
 
   // this is a workaround
