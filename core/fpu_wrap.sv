@@ -327,7 +327,14 @@ module fpu_wrap
 
 
 				//for min and max in decode decide if 001 or 000, then maybe share? or check encoding correct before sending
-
+				FSFMIN: begin
+  				fpu_op_d = fpnew_pkg::MINMAX;
+  				fpu_rm_d = 3'b000;  // min operation
+				end
+				FSFMAX: begin
+  				fpu_op_d = fpnew_pkg::MINMAX;
+  				fpu_rm_d = 3'b001;  // max operation
+				end
 
 
         // Vectorial Minimum - set up scalar encoding in rm
