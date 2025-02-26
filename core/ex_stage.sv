@@ -237,9 +237,9 @@ module ex_stage
     // Information dedicated to RVFI - RVFI
     output [CVA6Cfg.PLEN-1:0] rvfi_mem_paddr_o,
 		// sub8 source format
-		input [2:0] = fpu_sub8_SSFT,
+		input logic [2:0] fpu_sub8_SSFT,
 		// sub8 destination format
-		input [2:0] = fpu_sub8_SEFT;
+		input logic [2:0] fpu_sub8_SEFT;
 );
 
   // -------------------------
