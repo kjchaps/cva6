@@ -236,9 +236,9 @@ module ex_stage
     output lsu_ctrl_t rvfi_lsu_ctrl_o,
     // Information dedicated to RVFI - RVFI
     output [CVA6Cfg.PLEN-1:0] rvfi_mem_paddr_o,
-		// sub8 source format
+		// sub8 source format - CSR regfile
 		input logic [2:0] fpu_sub8_SSFT,
-		// sub8 destination format
+		// sub8 destination format - CSR regfile
 		input logic [2:0] fpu_sub8_SEFT;
 );
 
