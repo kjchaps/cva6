@@ -349,7 +349,13 @@ module csr_regfile
         end
         riscv::CSR_FCSR: begin
           if (CVA6Cfg.FpPresent && !(mstatus_q.fs == riscv::Off || (CVA6Cfg.RVH && v_q && vsstatus_q.fs == riscv::Off))) begin
-            csr_rdata = {{CVA6Cfg.XLEN - 8{1'b0}}, fcsr_q.frm, fcsr_q.fflags};
+            //** modified for SUB8, still have to do write access, testing 
+            csr_rdata = {{CVA6Cfg.XLEN - 21{1'b0}},   //adding for XLEN size
+                          fcsr_q.seft,                // SEFT field
+                          fcsr_q.ssft,                // SSFT field
+                          9'b0,                       // 9 zeros for padding for fprec
+                          fcsr_q.frm, 
+                          fcsr_q.fflags};
           end else begin
             read_access_exception = 1'b1;
           end
