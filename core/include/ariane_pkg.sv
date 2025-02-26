@@ -312,6 +312,7 @@ package ariane_pkg;
     CSR_READ,
     CSR_SET,
     CSR_CLEAR,
+		SSET, //sets SEFT and SSFT 
     // LSU functions
     LD,
     SD,
@@ -385,6 +386,8 @@ package ariane_pkg;
     FSW,
     FSH,
     FSB,
+		FSFL, // new sub8 load
+		FSFS, // new sub8 store
     // Floating-Point Computational Instructions
     FADD,
     FSUB,
@@ -396,6 +399,12 @@ package ariane_pkg;
     FMSUB,
     FNMSUB,
     FNMADD,
+		FSFADD, //sub8 add
+		FSFSUB, //sub8 sub
+		FSFMUL, //sub8 mul
+		FSFDIV, //sub8 div
+		FSFMIN, //sub8 min
+		FSFMAX, //sub8 max
     // Floating-Point Conversion and Move Instructions
     FCVT_F2I,
     FCVT_I2F,
@@ -403,6 +412,7 @@ package ariane_pkg;
     FSGNJ,
     FMV_F2X,
     FMV_X2F,
+		FSFCVT, //sub8 convert
     // Floating-Point Compare Instructions
     FCMP,
     // Floating-Point Classify Instruction
