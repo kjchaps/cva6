@@ -306,6 +306,18 @@ module fpu_wrap
           };  // mask out AH encoding bit - CLASS doesn't care anyways
           check_ah = 1'b1;  // AH has RM MSB encoding
         end
+
+				///////////// sub8 instruction area here
+				FSFADD: begin
+					fpu_op_d    = fpnew_pkg::ADD;
+          replicate_c = 1'b1; // second operand is in C
+					//here get types from CSR or see if in decode
+				end
+
+
+
+
+
         // Vectorial Minimum - set up scalar encoding in rm
         VFMIN: begin
           fpu_op_d = fpnew_pkg::MINMAX;
