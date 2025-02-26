@@ -235,7 +235,11 @@ module ex_stage
     // Information dedicated to RVFI - RVFI
     output lsu_ctrl_t rvfi_lsu_ctrl_o,
     // Information dedicated to RVFI - RVFI
-    output [CVA6Cfg.PLEN-1:0] rvfi_mem_paddr_o
+    output [CVA6Cfg.PLEN-1:0] rvfi_mem_paddr_o, 
+		// sub8 source format - CSR regfile
+		input logic [2:0] fpu_sub8_SSFT,
+		// sub8 destination format - CSR regfile
+		input logic [2:0] fpu_sub8_SEFT
 );
 
   // -------------------------
@@ -280,11 +284,7 @@ module ex_stage
   logic [CVA6Cfg.NrIssuePorts-1:0] one_cycle_select;
   assign one_cycle_select = alu_valid_i | branch_valid_i | csr_valid_i;
 
-		// sub8 source format - CSR regfile
-		logic [2:0] fpu_sub8_SSFT;
-		// sub8 destination format - CSR regfile
-		logic [2:0] fpu_sub8_SEFT;
-
+		
   fu_data_t one_cycle_data;
   logic [CVA6Cfg.VLEN-1:0] rs1_forwarding;
   logic [CVA6Cfg.VLEN-1:0] rs2_forwarding;
