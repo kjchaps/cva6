@@ -1,4 +1,4 @@
-/* Copyright 2018 ETH Zurich and University of Bologna.
+=/* Copyright 2018 ETH Zurich and University of Bologna.
  * Copyright and related rights are licensed under the Solderpad Hardware
  * License, Version 0.51 (the “License”); you may not use this file except in
  * compliance with the License.  You may obtain a copy of the License at
@@ -802,13 +802,16 @@ package riscv;
     csr_addr_t csr_decode;
   } csr_t;
 
-  // Floating-Point control and status register (32-bit!)
+ register (32-bit!)
   typedef struct packed {
-    logic [31:15] reserved;  // reserved for L extension, return 0 otherwise
+    logic [31:21] reserved;  // reserved for L extension, return 0 otherwise
+    logic [2:0]   seft;      //**stole 3 reserved bits for sub8 FP
+    logic [2:0]   ssft;      //**stole 3 reserved bits for sub8 FP
     logic [6:0]   fprec;     // div/sqrt precision control
     logic [2:0]   frm;       // float rounding mode
     logic [4:0]   fflags;    // float exception flags
   } fcsr_t;
+
 
   // PMP
   typedef enum logic [1:0] {
