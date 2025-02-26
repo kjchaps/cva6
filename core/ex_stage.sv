@@ -235,7 +235,11 @@ module ex_stage
     // Information dedicated to RVFI - RVFI
     output lsu_ctrl_t rvfi_lsu_ctrl_o,
     // Information dedicated to RVFI - RVFI
-    output [CVA6Cfg.PLEN-1:0] rvfi_mem_paddr_o
+    output [CVA6Cfg.PLEN-1:0] rvfi_mem_paddr_o,
+		// sub8 source format
+		input [2:0] = fpu_sub8_SSFT,
+		// sub8 destination format
+		input [2:0] = fpu_sub8_SEFT;
 );
 
   // -------------------------
@@ -280,9 +284,7 @@ module ex_stage
   logic [CVA6Cfg.NrIssuePorts-1:0] one_cycle_select;
   assign one_cycle_select = alu_valid_i | branch_valid_i | csr_valid_i;
 
-	//sub8
-	logic[2:0] = fpu_sub8_srcfmt;
-	logic[2:0] = fpu_sub8_dstfmt;
+	
 
   fu_data_t one_cycle_data;
   logic [CVA6Cfg.VLEN-1:0] rs1_forwarding;
@@ -449,8 +451,8 @@ module ex_stage
           .result_o(fpu_result),
           .fpu_valid_o(fpu_valid),
           .fpu_exception_o, 
-					.fpu_sub8_srcfmt_i(fpu_sub8_srcfmt),
-					.fpu_sub8_dstfmt_i(fpu_sub8_dstfmt)
+					.fpu_sub8_ssft_i(fpu_sub8_SSFT),
+					.fpu_sub8_seft_i(fpu_sub8_SEFT)
       );
     end else begin : no_fpu_gen
       assign fpu_ready_o     = '0;
