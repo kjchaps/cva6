@@ -312,7 +312,6 @@ package ariane_pkg;
     CSR_READ,
     CSR_SET,
     CSR_CLEAR,
-		SSET, //sets SEFT and SSFT 
     // LSU functions
     LD,
     SD,
