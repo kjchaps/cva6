@@ -1,4 +1,4 @@
-=/* Copyright 2018 ETH Zurich and University of Bologna.
+/* Copyright 2018 ETH Zurich and University of Bologna.
  * Copyright and related rights are licensed under the Solderpad Hardware
  * License, Version 0.51 (the “License”); you may not use this file except in
  * compliance with the License.  You may obtain a copy of the License at
@@ -804,9 +804,9 @@ package riscv;
 
  register (32-bit!)
   typedef struct packed {
-    logic [31:21] reserved;  // reserved for L extension, return 0 otherwise
-    logic [2:0]   eft;      //**stole 3 reserved bits for sub8 FP
-    logic [2:0]   sft;      //**stole 3 reserved bits for sub8 FP
+    logic [31:23] reserved;  // reserved for L extension, return 0 otherwise
+    logic [3:0]   eft;      //**stole 4 reserved bits for sub8 FP
+    logic [3:0]   sft;      //**stole 4 reserved bits for sub8 FP
     logic [6:0]   fprec;     // div/sqrt precision control
     logic [2:0]   frm;       // float rounding mode
     logic [4:0]   fflags;    // float exception flags
