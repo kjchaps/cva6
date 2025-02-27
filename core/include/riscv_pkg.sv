@@ -385,6 +385,8 @@ package riscv;
     CSR_FFLAGS           = 12'h001,
     CSR_FRM              = 12'h002,
     CSR_FCSR             = 12'h003,
+		CSR_SFT								= 12'h004, 
+		CSR_EFT								= 12'h005, 
     //jvt
     CSR_JVT              = 12'h017,
     CSR_FTRAN            = 12'h800,
