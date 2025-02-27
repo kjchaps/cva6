@@ -805,8 +805,8 @@ package riscv;
  register (32-bit!)
   typedef struct packed {
     logic [31:21] reserved;  // reserved for L extension, return 0 otherwise
-    logic [2:0]   seft;      //**stole 3 reserved bits for sub8 FP
-    logic [2:0]   ssft;      //**stole 3 reserved bits for sub8 FP
+    logic [2:0]   eft;      //**stole 3 reserved bits for sub8 FP
+    logic [2:0]   sft;      //**stole 3 reserved bits for sub8 FP
     logic [6:0]   fprec;     // div/sqrt precision control
     logic [2:0]   frm;       // float rounding mode
     logic [4:0]   fflags;    // float exception flags
