@@ -36,8 +36,8 @@ module fpu_wrap
     output logic                                   fpu_valid_o,
     output exception_t                             fpu_exception_o,
 
-		input  logic       [                      2:0] fpu_sub8_ssft_i,
-    input  logic       [                      2:0] fpu_sub8_seft_i
+		input  logic       [                      3:0] fpu_sub8_ssft_i,
+    input  logic       [                      3:0] fpu_sub8_seft_i
 );
 
   // this is a workaround
