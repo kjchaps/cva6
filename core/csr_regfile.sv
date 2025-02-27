@@ -1051,8 +1051,12 @@ module csr_regfile
           if (CVA6Cfg.FpPresent && !(mstatus_q.fs == riscv::Off || (CVA6Cfg.RVH && v_q && vsstatus_q.fs == riscv::Off))) begin
             dirty_fp_state_csr = 1'b1;
             fcsr_d[7:0] = csr_wdata[7:0];  // ignore writes to reserved space
-						fcsr_d.eft = csr_wdata[22:19];  // SEFT (bits 19-22)
-      			fcsr_d.sft = csr_wdata[18:15];  // SSFT (bits 15–18)
+						
+
+						//fcsr_d[22:19] = csr_wdata[3:0];  // SEFT (bits 19-22)
+      			//fcsr_d[18:15] = csr_wdata[3:0];  // SSFT (bits 15–18)
+
+
             // this instruction has side-effects
             flush_o = 1'b1;
           end else begin
