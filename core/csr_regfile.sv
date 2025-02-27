@@ -359,10 +359,10 @@ module csr_regfile
         riscv::CSR_FCSR: begin
           if (CVA6Cfg.FpPresent && !(mstatus_q.fs == riscv::Off || (CVA6Cfg.RVH && v_q && vsstatus_q.fs == riscv::Off))) begin
             //** modified for SUB8, still have to do write access, testing 
-            csr_rdata = {{CVA6Cfg.XLEN - 21{1'b0}},   //adding for XLEN size
+            csr_rdata = {{CVA6Cfg.XLEN - 23{1'b0}},   //adding for XLEN size
                           fcsr_q.seft,                // SEFT field
                           fcsr_q.ssft,                // SSFT field
-                          9'b0,                       // 9 zeros for padding for fprec
+                          7'b0,                       // 7 zeros for padding for fprec
                           fcsr_q.frm, 
                           fcsr_q.fflags};
           end else begin
@@ -1053,10 +1053,10 @@ module csr_regfile
             fcsr_d[7:0] = csr_wdata[7:0];  // ignore writes to reserved space
             // this instruction has side-effects
             flush_o = 1'b1;
-						if (sset_instr_decoded) begin // SEFT and SSFT bits (20:15) if SSET
-      				fcsr_d.seft = csr_wdata[20:18];  // SEFT (bits 20–18)
-      				fcsr_d.ssft = csr_wdata[17:15];  // SSFT (bits 17–15)
-							end
+
+      				fcsr_d.eft = csr_wdata[22:19];  // SEFT (bits 19-22)
+      				fcsr_d.sft = csr_wdata[18:15];  // SSFT (bits 15–18)
+							
           end else begin
             update_access_exception = 1'b1;
           end
