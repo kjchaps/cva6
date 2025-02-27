@@ -200,9 +200,9 @@ module csr_regfile
   } hgatp_t;
 
 		// sub8 source format 
-		logic [2:0] fpu_sub8_SSFT;
+		logic [3:0] fpu_sub8_SSFT;
 		// sub8 destination format 
-		logic [2:0] fpu_sub8_SEFT;
+		logic [3:0] fpu_sub8_SEFT;
 
   // internal signal to keep track of access exceptions
   logic read_access_exception, update_access_exception, privilege_violation;
