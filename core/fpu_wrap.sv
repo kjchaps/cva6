@@ -1,4 +1,4 @@
-// Copyright 2018 ETH Zurich and University of Bologna.
+=// Copyright 2018 ETH Zurich and University of Bologna.
 // Copyright and related rights are licensed under the Solderpad Hardware
 // License, Version 0.51 (the "License"); you may not use this file except in
 // compliance with the License.  You may obtain a copy of the License at
@@ -312,10 +312,27 @@ module fpu_wrap
 
 				///////////// sub8 instruction area here
 				//
+				
+				//
 				FSFADD: begin
 					fpu_op_d    = fpnew_pkg::ADD;
           replicate_c = 1'b1; // second operand is in C
-					//types should already be retrieved and set from CSR in decode
+					unique case (fpu_sub8_ssft_i)
+              4'b0001: fpu_srcfmt_d = fpnew_pkg::FP8;
+              4'b0010: fpu_srcfmt_d = fpnew_pkg::FP8_E4M3;
+              //4'b0011: fpu_srcfmt_d = fpnew_pkg:: //future FP6
+             	//4'b0100: fpu_srcfmt_d = fpnew_pkg:: //future FP6
+							4'b0001: fpu_srcfmt_d = fpnew_pkg::FP4;
+            	default: ;  // Do nothing
+           endcase
+					unique case (fpu_sub8_seft_i)
+              4'b0001: fpu_dstfmt_d = fpnew_pkg::FP8;
+              4'b0010: fpu_dstfmt_d = fpnew_pkg::FP8_E4M3;
+              //4'b0011: fpu_dstfmt_d = fpnew_pkg:: //future FP6
+             	//4'b0100: fpu_dstfmt_d = fpnew_pkg:: //future FP6
+							4'b0001: fpu_dstfmt_d = fpnew_pkg::FP4;
+            	default: ;  // Do nothing
+           endcase
 				end
 				//SUB8 Subtraction
 				FSFSUB: begin
