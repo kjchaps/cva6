@@ -523,6 +523,8 @@ package ariane_pkg;
   function automatic logic is_rs1_fpr(input fu_op op);
     unique case (op) inside
       [FMUL : FNMADD],  // Computational Operations (except ADD/SUB)
+			[FSFADD : FSMAX], // sub FP8 computational, included ADD/SUB since IMM prohibited for RS1
+			FSFCVT, // sub FP8 F2F
       FCVT_F2I,  // Float-Int Casts
       FCVT_F2F,  // Float-Float Casts
       FSGNJ,  // Sign Injections
@@ -541,7 +543,10 @@ package ariane_pkg;
   function automatic logic is_rs2_fpr(input fu_op op);
     unique case (op) inside
       [FSD : FSB],  // FP Stores
+			FSFS, // sub 8 FP store
       [FADD : FMIN_MAX],  // Computational Operations (no sqrt)
+			[FSFADD : FSMAX], // sub FP8 computational, included ADD/SUB since IMM prohibited for RS1
+			FSFCVT, // sub FP8 F2F
       [FMADD : FNMADD],  // Fused Computational Operations
       FCVT_F2F,  // Vectorial F2F Conversions requrie target
       [FSGNJ : FMV_F2X],  // Sign Injections and moves mapped to SGNJ
@@ -570,7 +575,10 @@ package ariane_pkg;
   function automatic logic is_rd_fpr(input fu_op op);
     unique case (op) inside
       [FLD : FLB],  // FP Loads
+			FSFL, // sub8 FP load
       [FADD : FNMADD],  // Computational Operations
+			[FSFADD : FSMAX], // sub FP8 computational, included ADD/SUB since IMM prohibited for RS1
+			FSFCVT, // sub FP8 F2F
       FCVT_I2F,  // Int-Float Casts
       FCVT_F2F,  // Float-Float Casts
       FSGNJ,  // Sign Injections
