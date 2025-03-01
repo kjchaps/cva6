@@ -317,6 +317,23 @@ module fpu_wrap
 				FSFADD: begin
 					fpu_op_d    = fpnew_pkg::ADD;
           replicate_c = 1'b1; // second operand is in C
+				end
+				//SUB8 Subtraction
+				FSFSUB: begin
+          fpu_op_d     = fpnew_pkg::ADD;
+          fpu_op_mod_d = 1'b1;
+          replicate_c  = 1'b1;  // second operand is in C
+        end
+        // SUB8 Multiplication
+        FSFMUL:    fpu_op_d = fpnew_pkg::MUL;
+        // SUB8 Division
+        FSFDIV:    fpu_op_d = fpnew_pkg::DIV;
+				// SUB8 Conversion
+				FSFCVT: fpu_op_d = fpnew_pkg::F2F;
+
+
+				// Special case for SUB8 instructions
+  			if (fu_data_i.operation inside {FSFADD, FSFSUB, FSFMUL, FSFDIV, FSFCVT}) begin
 					unique case (fpu_sub8_ssft_i)
               4'b0001: fpu_srcfmt_d = fpnew_pkg::FP8;
               4'b0010: fpu_srcfmt_d = fpnew_pkg::FP8_E4M3;
@@ -334,16 +351,8 @@ module fpu_wrap
             	default: ;  // Do nothing
            endcase
 				end
-				//SUB8 Subtraction
-				FSFSUB: begin
-          fpu_op_d     = fpnew_pkg::ADD;
-          fpu_op_mod_d = 1'b1;
-          replicate_c  = 1'b1;  // second operand is in C
-        end
-        // SUB8 Multiplication
-        FSFMUL:    fpu_op_d = fpnew_pkg::MUL;
-        // SUB8 Division
-        FSFDIV:    fpu_op_d = fpnew_pkg::DIV;
+
+
 
 
 				//for min and max in decode decide if 001 or 000, then maybe share? or check encoding correct before sending
@@ -356,6 +365,25 @@ module fpu_wrap
   				fpu_rm_d = 3'b001;  // max operation
 				end
 
+
+					// Special case for SUB8 MIN MAX instructions
+  			if (fu_data_i.operation inside {FSFMIN, FSFMAX}) begin
+					unique case (fpu_sub8_ssft_i)
+              4'b0001: begin
+								fpu_srcfmt_d = fpnew_pkg::FP8;
+								fpu_dstfmt_d = fpnew_pkg::FP8;
+							end
+              4'b0010: begin
+								fpu_srcfmt_d = fpnew_pkg::FP8_E4M3;
+								fpu_dstfmt_d = fpnew_pkg::FP8_E4M3;
+              end
+							4'b0001: begin
+								fpu_srcfmt_d = fpnew_pkg::FP4;
+								fpu_dstfmt_d = fpnew_pkg::FP4;
+							end
+            	default: ;  // Do nothing
+           endcase
+				end
 
         // Vectorial Minimum - set up scalar encoding in rm
         VFMIN: begin
