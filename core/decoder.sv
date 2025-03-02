@@ -1332,6 +1332,37 @@ module decoder
           end
         end
 
+	// SUB FP8 Arithmetic- all use rftype_t, funct7 for opcodes
+			riscv::OpcodeCustomArithmeticSubFp: begin
+          if (CVA6Cfg.FpPresent && fs_i != riscv::Off && ((CVA6Cfg.RVH && (!v_i || vfs_i != riscv::Off)) || !CVA6Cfg.RVH)) begin // only generate decoder if FP extensions are enabled (static)
+            instruction_o.fu  = FPU;
+            instruction_o.rs1 = instr.rftype.rs1;
+            instruction_o.rs2 = instr.rftype.rs2;
+            instruction_o.rd  = instr.rftype.rd;
+            check_fprm        = 1'b1;
+            // decode FP instruction
+            unique case (instr.rftype.funct5)
+              5'b00000: begin
+                instruction_o.op  = ariane_pkg::FADD;  // fadd.fmt - FP Addition
+                instruction_o.rs1 = '0;  // Operand A is set to 0
+                instruction_o.rs2 = instr.rftype.rs1;  // Operand B is set to rs1
+                imm_select        = IIMM;  // Operand C is set to rs2
+              end
+                default:           illegal_instr = 1'b1;
+              endcase
+            end
+          end else begin
+            illegal_instr = 1'b1;
+          end
+        end
+
+
+
+
+
+
+
+
         // ----------------------------------
         // Atomic Operations
         // ----------------------------------
