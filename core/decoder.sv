@@ -1337,34 +1337,33 @@ module decoder
           if (CVA6Cfg.FpPresent && fs_i != riscv::Off && ((CVA6Cfg.RVH && (!v_i || vfs_i != riscv::Off)) || !CVA6Cfg.RVH)) begin // only generate decoder if FP extensions are enabled (static)
             instruction_o.fu  = FPU;
             check_fprm        = 1'b1;
-						if(instr.rftype.funct include {}) begin
-
-						end
-						elseif(instr.rftype.funct include {}) begin 
-
-						end
-						elseif(instr.rftype.funct include {}) begin 
-
-						end
-						else begin 
-							illegal_instr = 1b1; 
-						end
-
-
-
             instruction_o.rs1 = instr.rtype.rs1;
             instruction_o.rs2 = instr.rtype.rs2;
             instruction_o.rd  = instr.rtype.rd;
 
             // decode FP instruction
             unique case (instr.rftype.funct7)
-              	7'b0000001:						instruction_o.op  = ariane_pkg::FSFADD;  // SUB FP8- FP 
-								7'b0000010:						instruction_o.op  = ariane_pkg::FSFSUB;
+              	7'b0000001:						begin
+									instruction_o.op  = ariane_pkg::FSFADD;  // SUB FP8- FP 
+									instruction_o.rs1 = '0;  // Operand A is set to 0
+                	instruction_o.rs2 = instr.rtype.rs1;  // Operand B is set to rs1
+                	imm_select        = IIMM;  // Operand C is set to rs2
+								end
+								7'b0000010:						begin
+									instruction_o.op  = ariane_pkg::FSFSUB;
+									instruction_o.rs1 = '0;  // Operand A is set to 0
+                	instruction_o.rs2 = instr.rtype.rs1;  // Operand B is set to rs1
+                	imm_select        = IIMM;  // Operand C is set to rs2
+								end
 								7'b0000011:						instruction_o.op  = ariane_pkg::FSFMUL;
 								7'b0000100:						instruction_o.op  = ariane_pkg::FSFDIV;
-								7'b0000101:						instruction_o.op  = ariane_pkg::FSFMIN;
+								7'b0000101:						instruction_o.op  = ariane_pkg::FSFMIN; 
 								7'b0000110:						instruction_o.op  = ariane_pkg::FSFMAX;
-								7'b0000111:						instruction_o.op  = ariane_pkg::FSFCVT;
+								7'b0000111:						begin
+									instruction_o.op  = ariane_pkg::FSFCVT;
+									instruction_o.rs2 = instr.rtype.rs1; // tie rs2 to rs1 to be safe (vectors use rs2)
+                	imm_select = IIMM;  // rs2 holds part of the intruction
+								end
                default:           		illegal_instr = 1'b1;
               endcase
             end
