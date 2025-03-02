@@ -1342,7 +1342,7 @@ module decoder
             instruction_o.rd  = instr.rtype.rd;
 
             // decode FP instruction
-            unique case (instr.rftype.funct7)
+            unique case (instr.rtype.funct7)
               	7'b0000001:						begin
 									instruction_o.op  = ariane_pkg::FSFADD;  // SUB FP8- FP 
 									instruction_o.rs1 = '0;  // Operand A is set to 0
@@ -1372,8 +1372,29 @@ module decoder
           end
         end
 
-
-
+			riscv::OpcodeLoadStoreSubFp: begin
+          if (CVA6Cfg.FpPresent && fs_i != riscv::Off && ((CVA6Cfg.RVH && (!v_i || vfs_i != riscv::Off)) || !CVA6Cfg.RVH)) begin // only generate decoder if FP extensions are enabled (static)
+            // decode FP instruction
+            if(instr.itype.funct3 == 3'b000) begin 
+							instruction_o.fu = LOAD;
+            	imm_select = IIMM;
+            	instruction_o.rs1 = instr.itype.rs1;
+            	instruction_o.rd = instr.itype.rd;
+						end
+						else if(instr.rtype.funct3 == 3'b0001) begin
+							instruction_o.fu = STORE;
+            	imm_select = SIMM;
+            	instruction_o.rs1 = instr.rtype.rs1;
+            	instruction_o.rs2 = instr.rtype.rs2;
+						end
+						else begin
+							illegal_instr = 1'b1;
+						end
+      
+          end else begin
+            illegal_instr = 1'b1;
+          end
+        end
 
 
 
