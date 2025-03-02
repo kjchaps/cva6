@@ -1336,17 +1336,36 @@ module decoder
 			riscv::OpcodeCustomArithmeticSubFp: begin
           if (CVA6Cfg.FpPresent && fs_i != riscv::Off && ((CVA6Cfg.RVH && (!v_i || vfs_i != riscv::Off)) || !CVA6Cfg.RVH)) begin // only generate decoder if FP extensions are enabled (static)
             instruction_o.fu  = FPU;
+            check_fprm        = 1'b1;
+						if(instr.rftype.funct include {}) begin
+
+						end
+						elseif(instr.rftype.funct include {}) begin 
+
+						end
+						elseif(instr.rftype.funct include {}) begin 
+
+						end
+						else begin 
+							illegal_instr = 1b1; 
+						end
+
+
+
             instruction_o.rs1 = instr.rtype.rs1;
             instruction_o.rs2 = instr.rtype.rs2;
             instruction_o.rd  = instr.rtype.rd;
-            check_fprm        = 1'b1;
+
             // decode FP instruction
             unique case (instr.rftype.funct7)
               	7'b0000001:						instruction_o.op  = ariane_pkg::FSFADD;  // SUB FP8- FP 
 								7'b0000010:						instruction_o.op  = ariane_pkg::FSFSUB;
 								7'b0000011:						instruction_o.op  = ariane_pkg::FSFMUL;
 								7'b0000100:						instruction_o.op  = ariane_pkg::FSFDIV;
-                default:           		illegal_instr = 1'b1;
+								7'b0000101:						instruction_o.op  = ariane_pkg::FSFMIN;
+								7'b0000110:						instruction_o.op  = ariane_pkg::FSFMAX;
+								7'b0000111:						instruction_o.op  = ariane_pkg::FSFCVT;
+               default:           		illegal_instr = 1'b1;
               endcase
             end
           end else begin
