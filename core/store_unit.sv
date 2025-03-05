@@ -83,7 +83,9 @@ module store_unit
     // Data cache request - CACHES
     input dcache_req_o_t req_port_i,
     // Data cache response - CACHES
-    output dcache_req_i_t req_port_o
+    output dcache_req_i_t req_port_o, 
+		input  logic       [                      3:0] sub8_csr_sft_ex, // from EX_Stage
+    input  logic       [                      3:0] sub8_csr_eft_ex // from EX_Stage
 );
 
   // align data to address e.g.: shift data to be naturally 64
