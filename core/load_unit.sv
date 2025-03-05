@@ -78,8 +78,7 @@ module load_unit
     // Data cache request in - CACHES
     output dcache_req_i_t req_port_o,
     // Presence of non-idempotent operations in the D$ write buffer - CACHES
-    input logic dcache_wbuffer_not_ni_i
-		input  logic       [                      3:0] sub8_csr_sft_ex, // from EX_Stage
+    input logic dcache_wbuffer_not_ni_i,
     input  logic       [                      3:0] sub8_csr_eft_ex // from EX_Stage
 );
   enum logic [3:0] {
