@@ -36,8 +36,8 @@ module fpu_wrap
     output logic                                   fpu_valid_o,
     output exception_t                             fpu_exception_o,
 
-		input  logic       [                      3:0] fpu_sub8_ssft_i,
-    input  logic       [                      3:0] fpu_sub8_seft_i
+		input  logic       [                      3:0] sub8_csr_sft_ex,
+    input  logic       [                      3:0] sub8_csr_eft_ex
 );
 
   // this is a workaround
@@ -334,7 +334,7 @@ module fpu_wrap
 
 				// Special case for SUB8 instructions
   			if (fu_data_i.operation inside {FSFADD, FSFSUB, FSFMUL, FSFDIV, FSFCVT}) begin
-					unique case (fpu_sub8_ssft_i)
+					unique case (sub8_csr_sft_ex)
               4'b0001: fpu_srcfmt_d = fpnew_pkg::FP8;
               4'b0010: fpu_srcfmt_d = fpnew_pkg::FP8_E4M3;
               //4'b0011: fpu_srcfmt_d = fpnew_pkg:: //future FP6
@@ -342,7 +342,7 @@ module fpu_wrap
 							4'b0001: fpu_srcfmt_d = fpnew_pkg::FP4;
             	default: ;  // Do nothing
            endcase
-					unique case (fpu_sub8_seft_i)
+					unique case (sub8_csr_eft_ex)
               4'b0001: fpu_dstfmt_d = fpnew_pkg::FP8;
               4'b0010: fpu_dstfmt_d = fpnew_pkg::FP8_E4M3;
               //4'b0011: fpu_dstfmt_d = fpnew_pkg:: //future FP6
@@ -368,7 +368,7 @@ module fpu_wrap
 
 					// Special case for SUB8 MIN MAX instructions
   			if (fu_data_i.operation inside {FSFMIN, FSFMAX}) begin
-					unique case (fpu_sub8_ssft_i)
+					unique case (sub8_csr_sft_ex)
               4'b0001: begin
 								fpu_srcfmt_d = fpnew_pkg::FP8;
 								fpu_dstfmt_d = fpnew_pkg::FP8;
