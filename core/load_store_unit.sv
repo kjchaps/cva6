@@ -545,7 +545,10 @@ module load_store_unit
       .amo_resp_i,
       // to memory arbiter
       .req_port_i           (dcache_req_ports_i[2]),
-      .req_port_o           (dcache_req_ports_o[2])
+      .req_port_o           (dcache_req_ports_o[2]), 
+			//to set sub FP8 size
+			.sub8_csr_sft_ex(sub8_csr_sft_ex),
+			.sub8_csr_eft_ex(sub8_csr_eft_ex)
   );
 
   // ------------------
@@ -587,7 +590,10 @@ module load_store_unit
       // to memory arbiter
       .req_port_i           (dcache_req_ports_i[1]),
       .req_port_o           (dcache_req_ports_o[1]),
-      .dcache_wbuffer_not_ni_i
+      .dcache_wbuffer_not_ni_i, 
+			// to set sub FP8 size
+			.sub8_csr_sft_ex(sub8_csr_sft_ex),
+			.sub8_csr_eft_ex(sub8_csr_eft_ex)
   );
 
   // ----------------------------
