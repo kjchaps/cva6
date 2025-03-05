@@ -172,9 +172,9 @@ module csr_regfile
     //jvt output
     output jvt_t jvt_o,
 		// sub8 source format - EX STAGE
-		output logic [2:0] fpu_sub8_SSFT,
+		output logic [3:0] fpu_sub8_sft_i,
 		// sub8 destination format - EX STAGE
-		output logic [2:0] fpu_sub8_SEFT
+		output logic [3:0] fpu_sub8_eft_i
 );
 
   localparam logic [63:0] SMODE_STATUS_READ_MASK = ariane_pkg::smode_status_read_mask(CVA6Cfg);
@@ -200,9 +200,9 @@ module csr_regfile
   } hgatp_t;
 
 		// sub8 source format 
-		logic [3:0] fpu_sub8_SSFT;
+		logic [3:0] fpu_sub8_sft_i;
 		// sub8 destination format 
-		logic [3:0] fpu_sub8_SEFT;
+		logic [3:0] fpu_sub8_eft_i;
 
   // internal signal to keep track of access exceptions
   logic read_access_exception, update_access_exception, privilege_violation;
@@ -360,8 +360,8 @@ module csr_regfile
           if (CVA6Cfg.FpPresent && !(mstatus_q.fs == riscv::Off || (CVA6Cfg.RVH && v_q && vsstatus_q.fs == riscv::Off))) begin
             //** modified for SUB8, still have to do write access, testing 
             csr_rdata = {{CVA6Cfg.XLEN - 23{1'b0}},   //adding for XLEN size
-                          fcsr_q.eft,                // SEFT field
-                          fcsr_q.sft,                // SSFT field
+                          fcsr_q.eft,                // EFT field
+                          fcsr_q.sft,                // SFT field
                           7'b0,                       // 7 zeros for padding for fprec
                           fcsr_q.frm, 
                           fcsr_q.fflags};
@@ -1065,8 +1065,8 @@ module csr_regfile
           if (CVA6Cfg.FpPresent && !(mstatus_q.fs == riscv::Off || (CVA6Cfg.RVH && v_q && vsstatus_q.fs == riscv::Off))) begin
             dirty_fp_state_csr = 1'b1;
             fcsr_d[7:0] = csr_wdata[7:0];  // ignore writes to reserved space
-						fcsr_d[22:19] = csr_wdata[22:19];  // SEFT (bits 19-22)
-      			fcsr_d[18:15] = csr_wdata[18:15];  // SSFT (bits 15–18)
+						fcsr_d[22:19] = csr_wdata[22:19];  // EFT (bits 19-22)
+      			fcsr_d[18:15] = csr_wdata[18:15];  // SFT (bits 15–18)
             // this instruction has side-effects
             flush_o = 1'b1;
           end else begin
