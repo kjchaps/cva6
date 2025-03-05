@@ -2496,7 +2496,8 @@ module csr_regfile
     // returned in the rd destination register contains the logical-OR of the software-writable
     // bit and the interrupt signal from the interrupt controller.
     csr_rdata_o = csr_rdata;
-
+		fpu_sub8_eft_i = fcsr_q.eft;
+  	fpu_sub8_sft_i = fcsr_q.sft;
     unique case (conv_csr_addr.address)
       riscv::CSR_MIP:
       csr_rdata_o = csr_rdata | ({{CVA6Cfg.XLEN - 1{1'b0}}, CVA6Cfg.RVS && irq_i[1]} << riscv::IRQ_S_EXT);
