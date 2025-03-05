@@ -585,6 +585,9 @@ module cva6
   riscv::pmpcfg_t [avoid_neg(CVA6Cfg.NrPMPEntries-1):0] pmpcfg;
   logic [avoid_neg(CVA6Cfg.NrPMPEntries-1):0][CVA6Cfg.PLEN-3:0] pmpaddr;
   logic [31:0] mcountinhibit_csr_perf;
+	logic [3:0] sub8_csr_sft_ex;
+	logic [3:0] sub8_csr_eft_ex;
+
   //jvt
   jvt_t jvt;
   // ----------------------------
@@ -1061,7 +1064,10 @@ module cva6
       .pmpaddr_i               (pmpaddr),
       //RVFI
       .rvfi_lsu_ctrl_o         (rvfi_lsu_ctrl),
-      .rvfi_mem_paddr_o        (rvfi_mem_paddr)
+      .rvfi_mem_paddr_o        (rvfi_mem_paddr), 
+			//sub FP8
+			.sub8_csr_sft_ex					(sub8_csr_sft_ex),							// from CSR
+			.sub8_csr_eft_ex					(sub8_csr_eft_ex)								// from CSR
   );
 
   // ---------
@@ -1200,7 +1206,9 @@ module cva6
       .mcountinhibit_o         (mcountinhibit_csr_perf),
       .jvt_o                   (jvt),
       //RVFI
-      .rvfi_csr_o              (rvfi_csr)
+      .rvfi_csr_o              (rvfi_csr), 
+			.sub8_csr_sft_ex					(sub8_csr_sft_ex),
+			.sub8_csr_eft_ex					(sub8_csr_eft_ex)
   );
 
   // ------------------------
