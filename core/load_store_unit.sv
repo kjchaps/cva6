@@ -162,8 +162,8 @@ module load_store_unit
     output lsu_ctrl_t                    rvfi_lsu_ctrl_o,
     // RVFI information - RVFI
     output logic      [CVA6Cfg.PLEN-1:0] rvfi_mem_paddr_o, 
-		input  logic       [                      3:0] fpu_sub8_ssft_i, // from EX_Stage
-    input  logic       [                      3:0] fpu_sub8_seft_i // from EX_Stage
+		input  logic       [                      3:0] sub8_csr_sft_ex, // from EX_Stage
+    input  logic       [                      3:0] sub8_csr_eft_ex // from EX_Stage
 );
 
   // data is misaligned
