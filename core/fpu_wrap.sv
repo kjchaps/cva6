@@ -67,24 +67,27 @@ module fpu_wrap
         Width: unsigned'(CVA6Cfg.FLen),  // parameterized using CVA6Cfg.FLen
         EnableVectors: CVA6Cfg.XFVec,
         EnableNanBox: 1'b1,
-        FpFmtMask: {CVA6Cfg.RVF, CVA6Cfg.RVD, CVA6Cfg.XF16, CVA6Cfg.XF8, CVA6Cfg.XF16ALT},
+        FpFmtMask: {CVA6Cfg.RVF, CVA6Cfg.RVD, CVA6Cfg.XF16, CVA6Cfg.XF8, CVA6Cfg.XF16ALT, CVA6Cfg.XF8_E4M3, CVA6Cfg.XF4},
         IntFmtMask: {
           CVA6Cfg.XFVec && CVA6Cfg.XF8,
           CVA6Cfg.XFVec && (CVA6Cfg.XF16 || CVA6Cfg.XF16ALT),
           1'b1,
-          1'b1
+          1'b1, 
+					1'b1
         }
     };
 
     // Implementation (number of registers etc)
     localparam fpnew_pkg::fpu_implementation_t FPU_IMPLEMENTATION = '{
-        PipeRegs: '{  // FP32, FP64, FP16, FP8, FP16alt
+        PipeRegs: '{  // FP32, FP64, FP16, FP8, FP16alt, FP8_E4M3, FP4
             '{
                 unsigned'(LAT_COMP_FP32),
                 unsigned'(LAT_COMP_FP64),
                 unsigned'(LAT_COMP_FP16),
                 unsigned'(LAT_COMP_FP8),
-                unsigned'(LAT_COMP_FP16ALT)
+                unsigned'(LAT_COMP_FP16ALT), 
+                unsigned'(LAT_COMP_FP8_E4M3), 
+                unsigned'(LAT_COMP_FP4)
             },  // ADDMUL
             '{default: unsigned'(LAT_DIVSQRT)},  // DIVSQRT
             '{default: unsigned'(LAT_NONCOMP)},  // NONCOMP
