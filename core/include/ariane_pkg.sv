@@ -402,8 +402,7 @@ package ariane_pkg;
 		FSFSUB, //sub8 sub
 		FSFMUL, //sub8 mul
 		FSFDIV, //sub8 div
-		FSFMIN, //sub8 min
-		FSFMAX, //sub8 max
+		FSFMIN_MAX, //sub8 min
     // Floating-Point Conversion and Move Instructions
     FCVT_F2I,
     FCVT_I2F,
@@ -415,8 +414,6 @@ package ariane_pkg;
 		FSFCVT_F2I, 
 		FSFCVT_I2F,
 		FSFGNJ, 
-		FSFGNJN, 
-		FSFGNJX,
     // Floating-Point Compare Instructions
     FCMP,
     // Floating-Point Classify Instruction
