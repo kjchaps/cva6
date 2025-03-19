@@ -411,8 +411,6 @@ package ariane_pkg;
     FMV_F2X,
     FMV_X2F,
 		FSFCVT_F2F, //sub8 convert
-		FSFCVT_F2I, 
-		FSFCVT_I2F,
 		FSFGNJ, 
     // Floating-Point Compare Instructions
     FCMP,
