@@ -1367,10 +1367,10 @@ module decoder
 									instruction_o.op  = ariane_pkg::FSFSGNJ; 
 									check_fprm       = 1'b0;  // instruction encoded in rm, do the check here
                	 if (CVA6Cfg.XF16ALT) begin        // FP16ALT instructions encoded in rm separately (static)
-               	   if (!(instr.rftype.rm inside {[3'b000 : 3'b010], [3'b100 : 3'b110]}))
+               	   if (!(instr.rtype.rm inside {[3'b000 : 3'b010], [3'b100 : 3'b110]}))
                	     illegal_instr = 1'b1;
                	 end else begin
-               	   if (!(instr.rftype.rm inside {[3'b000 : 3'b010]})) illegal_instr = 1'b1;
+               	   if (!(instr.rtype.rm inside {[3'b000 : 3'b010]})) illegal_instr = 1'b1;
                	 end
               end
 							7'b0000111: begin
