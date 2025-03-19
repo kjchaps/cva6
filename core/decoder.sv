@@ -1373,14 +1373,6 @@ module decoder
                	   if (!(instr.rtype.rm inside {[3'b000 : 3'b010]})) illegal_instr = 1'b1;
                	 end
               end
-							7'b0000111: begin
-                instruction_o.op = ariane_pkg::FSFCVT_I2F;  // fcvt.ifmt.fmt - FP to Int Conversion
-                imm_select       = IIMM;  // rs2 holds part of the instruction
-              end
-              7'b0001000: begin
-                instruction_o.op = ariane_pkg::FSFCVT_F2I;  // fcvt.fmt.ifmt - Int to FP Conversion
-                imm_select       = IIMM;  // rs2 holds part of the instruction
-							 end
                default:           		illegal_instr = 1'b1;
               endcase
             
