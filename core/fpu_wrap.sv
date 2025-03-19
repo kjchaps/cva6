@@ -347,7 +347,7 @@ module fpu_wrap
               4'b0010: fpu_srcfmt_d = fpnew_pkg::FP8_E4M3;
               //4'b0011: fpu_srcfmt_d = fpnew_pkg:: //future FP6
              	//4'b0100: fpu_srcfmt_d = fpnew_pkg:: //future FP6
-							4'b0001: fpu_srcfmt_d = fpnew_pkg::FP4;
+							4'b0101: fpu_srcfmt_d = fpnew_pkg::FP4;
             	default: ;  // Do nothing
            endcase
 					unique case (sub8_csr_eft_ex)
@@ -355,7 +355,7 @@ module fpu_wrap
               4'b0010: fpu_dstfmt_d = fpnew_pkg::FP8_E4M3;
               //4'b0011: fpu_dstfmt_d = fpnew_pkg:: //future FP6
              	//4'b0100: fpu_dstfmt_d = fpnew_pkg:: //future FP6
-							4'b0001: fpu_dstfmt_d = fpnew_pkg::FP4;
+							4'b0101: fpu_dstfmt_d = fpnew_pkg::FP4;
             	default: ;  // Do nothing
            endcase
 				end
@@ -381,7 +381,7 @@ module fpu_wrap
 								fpu_srcfmt_d = fpnew_pkg::FP8_E4M3;
 								fpu_dstfmt_d = fpnew_pkg::FP8_E4M3;
               end
-							4'b0001: begin
+							4'b0101: begin
 								fpu_srcfmt_d = fpnew_pkg::FP4;
 								fpu_dstfmt_d = fpnew_pkg::FP4;
 							end
