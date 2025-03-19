@@ -333,10 +333,15 @@ module fpu_wrap
         FSFDIV:    fpu_op_d = fpnew_pkg::DIV;
 				// SUB8 Conversion
 				FSFCVT: fpu_op_d = fpnew_pkg::F2F;
+				FSFSGNJ: begin
+          fpu_op_d = fpnew_pkg::SGNJ;
+          fpu_rm_d = {1'b0, fpu_rm_i[1:0]};  // mask out AH encoding bit
+          check_ah = 1'b1;  // AH has RM MSB encoding
+        end
 
 
 				// Special case for SUB8 instructions
-  			if (fu_data_i.operation inside {FSFADD, FSFSUB, FSFMUL, FSFDIV, FSFCVT}) begin
+  			if (fu_data_i.operation inside {FSFADD, FSFSUB, FSFMUL, FSFDIV, FSFCVT, FSFSGNJ}) begin
 					unique case (sub8_csr_sft_ex)
               4'b0001: fpu_srcfmt_d = fpnew_pkg::FP8;
               4'b0010: fpu_srcfmt_d = fpnew_pkg::FP8_E4M3;
@@ -359,18 +364,14 @@ module fpu_wrap
 
 
 				//for min and max in decode decide if 001 or 000, then maybe share? or check encoding correct before sending
-				FSFMIN: begin
-  				fpu_op_d = fpnew_pkg::MINMAX;
-  				fpu_rm_d = 3'b000;  // min operation
-				end
-				FSFMAX: begin
-  				fpu_op_d = fpnew_pkg::MINMAX;
-  				fpu_rm_d = 3'b001;  // max operation
+				FSFMIN_MAX: begin
+          fpu_rm_d = {1'b0, fpu_rm_i[1:0]};  // mask out AH encoding bit
+          check_ah = 1'b1;  // AH has RM MSB encoding
 				end
 
 
 					// Special case for SUB8 MIN MAX instructions
-  			if (fu_data_i.operation inside {FSFMIN, FSFMAX}) begin
+  			if (fu_data_i.operation inside {FSFMIN_MAX}) begin
 					unique case (sub8_csr_sft_ex)
               4'b0001: begin
 								fpu_srcfmt_d = fpnew_pkg::FP8;
