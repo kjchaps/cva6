@@ -1358,7 +1358,7 @@ module decoder
 								7'b0000010:						instruction_o.op  = ariane_pkg::FSFMUL;
 								7'b0000011:						instruction_o.op  = ariane_pkg::FSFDIV;
 								7'b0000100:	begin						
-										if (instr.rtype.rm==3;b000) instruction_o.op  = ariane_pkg::FSFMIN; 
+										if (instr.rtype.rm==3'b000) instruction_o.op  = ariane_pkg::FSFMIN; 
 										else if (instr.rtype.rm==3'b001) instruction_o.op  = ariane_pkg::FSFMAX;
 										else illegal_instr = 1'b1;
 								end
@@ -1367,37 +1367,49 @@ module decoder
 									instruction_o.rs2 = instr.rtype.rs1; // tie rs2 to rs1 to be safe (vectors use rs2)
                 	imm_select = IIMM;  // rs2 holds part of the intruction
 								end
+								7'b0000110: begin
+									check_fprm       = 1'b0;  // instruction encoded in rm, do the check here
+                	if (CVA6Cfg.XF16ALT) begin        // FP16ALT instructions encoded in rm separately (static)
+                  	if (!(instr.rtype.rm inside {[3'b000 : 3'b010], [3'b100 : 3'b110]}))
+                    	illegal_instr = 1'b1;
+                	end else begin
+                  	if (!(instr.rtype.rm inside {[3'b000 : 3'b010]})) illegal_instr = 1'b1;
+                	end
+									if (instr.rtype.rm==3'b000) instruction_o.op  = ariane_pkg::FSFSGNJ; 
+									else if (instr.rtype.rm==3'b001) instruction_o.op  = ariane_pkg::FSFSGNJN;
+									else if (instr.rtype.rm==3'b010) instruction_o.op  = ariane_pkg::FSFSGNJX;
+									else illegal_instr = 1'b1;
 								
+								end
 								7'b0000111: begin
                 instruction_o.op = ariane_pkg::FSFCVT_I2F;  // fcvt.ifmt.fmt - FP to Int Conversion
                 imm_select       = IIMM;  // rs2 holds part of the instruction
-                if (|instr.rftype.rs2[24:22])
-                  illegal_instr = 1'b1;  // bits [21:20] used, other bits must be 0
               end
               7'b0001000: begin
                 instruction_o.op = ariane_pkg::FSFCVT_F2I;  // fcvt.fmt.ifmt - Int to FP Conversion
                 imm_select       = IIMM;  // rs2 holds part of the instruction
-                if (|instr.rftype.rs2[24:22])
-                  illegal_instr = 1'b1;  // bits [21:20] used, other bits must be 0
-              end
+							 end
                default:           		illegal_instr = 1'b1;
               endcase
             end
           end else begin
             illegal_instr = 1'b1;
           end
+				//rounding mode check? 
         end
 
 			riscv::OpcodeLoadStoreSubFp: begin
           if (CVA6Cfg.FpPresent && fs_i != riscv::Off && ((CVA6Cfg.RVH && (!v_i || vfs_i != riscv::Off)) || !CVA6Cfg.RVH)) begin // only generate decoder if FP extensions are enabled (static)
             // decode FP instruction
             if(instr.itype.funct3 == 3'b000) begin 
+							instruction_o.op = ariane_pkg::FSFL; 
 							instruction_o.fu = LOAD;
             	imm_select = IIMM;
             	instruction_o.rs1 = instr.itype.rs1;
             	instruction_o.rd = instr.itype.rd;
 						end
 						else if(instr.rtype.funct3 == 3'b0001) begin
+							instruction_o.op = ariane_pkg::FSFS; 
 							instruction_o.fu = STORE;
             	imm_select = SIMM;
             	instruction_o.rs1 = instr.rtype.rs1;
