@@ -1383,11 +1383,31 @@ module decoder
 							 end
                default:           		illegal_instr = 1'b1;
               endcase
+            
+            // check rounding mode
+            if (check_fprm) begin
+              unique case (instr.rtype.rm) inside
+                [3'b000 : 3'b100]: ;  //legal rounding modes
+                3'b101: begin  // Alternative Half-Precsision encded as fmt=10 and rm=101
+                  if (~CVA6Cfg.XF16ALT || instr.rftype.fmt != 2'b10) illegal_instr = 1'b1;
+                  unique case (frm_i) inside  // actual rounding mode from frm csr
+                    [3'b000 : 3'b100]: ;  //legal rounding modes
+                    default: illegal_instr = 1'b1;
+                  endcase
+                end
+                3'b111: begin
+                  // rounding mode from frm csr
+                  unique case (frm_i) inside
+                    [3'b000 : 3'b100]: ;  //legal rounding modes
+                    default: illegal_instr = 1'b1;
+                  endcase
+                end
+                default:           illegal_instr = 1'b1;
+              endcase
             end
           end else begin
             illegal_instr = 1'b1;
           end
-				//rounding mode check? 
         end
 
 			riscv::OpcodeLoadStoreSubFp: begin
