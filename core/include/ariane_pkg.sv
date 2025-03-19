@@ -523,11 +523,12 @@ package ariane_pkg;
   function automatic logic is_rs1_fpr(input fu_op op);
     unique case (op) inside
       [FMUL : FNMADD],  // Computational Operations (except ADD/SUB)
-			[FSFADD : FSMAX], // sub FP8 computational, included ADD/SUB since IMM prohibited for RS1
-			FSFCVT, // sub FP8 F2F
+			[FSFADD : FSMIN_MAX], // sub FP8 computational, included ADD/SUB since IMM prohibited for RS1
+			FSFCVT_F2F, // sub FP8 F2F
       FCVT_F2I,  // Float-Int Casts
       FCVT_F2F,  // Float-Float Casts
       FSGNJ,  // Sign Injections
+			FSFGNJ, // sub FP8 sign injection
       FMV_F2X,  // FPR-GPR Moves
       FCMP,  // Comparisons
       FCLASS,  // Classifications
@@ -545,11 +546,12 @@ package ariane_pkg;
       [FSD : FSB],  // FP Stores
 			FSFS, // sub 8 FP store
       [FADD : FMIN_MAX],  // Computational Operations (no sqrt)
-			[FSFADD : FSMAX], // sub FP8 computational, included ADD/SUB since IMM prohibited for RS1
-			FSFCVT, // sub FP8 F2F
+			[FSFADD : FSFMIN_MAX], // sub FP8 computational, included ADD/SUB since IMM prohibited for RS1
+			//FSFCVT_F2F, // sub FP8 F2F
       [FMADD : FNMADD],  // Fused Computational Operations
       FCVT_F2F,  // Vectorial F2F Conversions requrie target
       [FSGNJ : FMV_F2X],  // Sign Injections and moves mapped to SGNJ
+			FSFGNJ, // sub FP8 sign injection
       FCMP,  // Comparisons
       [VFMIN : VFCPKCD_D]:
       return 1'b1;  // Additional Vectorial FP ops
@@ -577,11 +579,12 @@ package ariane_pkg;
       [FLD : FLB],  // FP Loads
 			FSFL, // sub8 FP load
       [FADD : FNMADD],  // Computational Operations
-			[FSFADD : FSMAX], // sub FP8 computational, included ADD/SUB since IMM prohibited for RS1
-			FSFCVT, // sub FP8 F2F
+			[FSFADD : FSFMIN_MAX], // sub FP8 computational, included ADD/SUB since IMM prohibited for RS1
+			FSFCVT_F2F, // sub FP8 F2F
       FCVT_I2F,  // Int-Float Casts
       FCVT_F2F,  // Float-Float Casts
       FSGNJ,  // Sign Injections
+			FSFGNJ, // sub FP8 sign injection
       FMV_X2F,  // GPR-FPR Moves
       [VFMIN : VFSGNJX],  // Vectorial MIN/MAX and SGNJ
       [VFCPKAB_S : VFCPKCD_D],  // Vectorial FP cast and pack ops
