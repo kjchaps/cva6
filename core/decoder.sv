@@ -1357,31 +1357,23 @@ module decoder
 								end
 								7'b0000010:						instruction_o.op  = ariane_pkg::FSFMUL;
 								7'b0000011:						instruction_o.op  = ariane_pkg::FSFDIV;
-								7'b0000100:	begin						
-										if (instr.rtype.rm==3'b000) instruction_o.op  = ariane_pkg::FSFMIN; 
-										else if (instr.rtype.rm==3'b001) instruction_o.op  = ariane_pkg::FSFMAX;
-										else illegal_instr = 1'b1;
-								end
+								7'b0000100:						instruction_o.op  = ariane_pkg::FSFMIN_MAX; 
 								7'b0000101:						begin
 									instruction_o.op  = ariane_pkg::FSFCVT_F2F;
 									instruction_o.rs2 = instr.rtype.rs1; // tie rs2 to rs1 to be safe (vectors use rs2)
                 	imm_select = IIMM;  // rs2 holds part of the intruction
 								end
 								7'b0000110: begin
+									instruction_o.op  = ariane_pkg::FSFSGNJ; 
 									check_fprm       = 1'b0;  // instruction encoded in rm, do the check here
-                	if (CVA6Cfg.XF16ALT) begin        // FP16ALT instructions encoded in rm separately (static)
-                  	if (!(instr.rtype.rm inside {[3'b000 : 3'b010], [3'b100 : 3'b110]}))
-                    	illegal_instr = 1'b1;
-                	end else begin
-                  	if (!(instr.rtype.rm inside {[3'b000 : 3'b010]})) illegal_instr = 1'b1;
-                	end
-									if (instr.rtype.rm==3'b000) instruction_o.op  = ariane_pkg::FSFSGNJ; 
-									else if (instr.rtype.rm==3'b001) instruction_o.op  = ariane_pkg::FSFSGNJN;
-									else if (instr.rtype.rm==3'b010) instruction_o.op  = ariane_pkg::FSFSGNJX;
-									else illegal_instr = 1'b1;
-								
-								end
-								7'b0000111: begin
+               	 if (CVA6Cfg.XF16ALT) begin        // FP16ALT instructions encoded in rm separately (static)
+               	   if (!(instr.rftype.rm inside {[3'b000 : 3'b010], [3'b100 : 3'b110]}))
+               	     illegal_instr = 1'b1;
+               	 end else begin
+               	   if (!(instr.rftype.rm inside {[3'b000 : 3'b010]})) illegal_instr = 1'b1;
+               	 end
+              end
+							7'b0000111: begin
                 instruction_o.op = ariane_pkg::FSFCVT_I2F;  // fcvt.ifmt.fmt - FP to Int Conversion
                 imm_select       = IIMM;  // rs2 holds part of the instruction
               end
