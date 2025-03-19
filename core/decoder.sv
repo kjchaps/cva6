@@ -1343,27 +1343,43 @@ module decoder
 
             // decode FP instruction
             unique case (instr.rtype.funct7)
-              	7'b0000001:						begin
+              	7'b0000000:						begin
 									instruction_o.op  = ariane_pkg::FSFADD;  // SUB FP8- FP 
 									instruction_o.rs1 = '0;  // Operand A is set to 0
                 	instruction_o.rs2 = instr.rtype.rs1;  // Operand B is set to rs1
                 	imm_select        = IIMM;  // Operand C is set to rs2
 								end
-								7'b0000010:						begin
+								7'b0000001:						begin
 									instruction_o.op  = ariane_pkg::FSFSUB;
 									instruction_o.rs1 = '0;  // Operand A is set to 0
                 	instruction_o.rs2 = instr.rtype.rs1;  // Operand B is set to rs1
                 	imm_select        = IIMM;  // Operand C is set to rs2
 								end
-								7'b0000011:						instruction_o.op  = ariane_pkg::FSFMUL;
-								7'b0000100:						instruction_o.op  = ariane_pkg::FSFDIV;
-								7'b0000101:						instruction_o.op  = ariane_pkg::FSFMIN; 
-								7'b0000110:						instruction_o.op  = ariane_pkg::FSFMAX;
-								7'b0000111:						begin
-									instruction_o.op  = ariane_pkg::FSFCVT;
+								7'b0000010:						instruction_o.op  = ariane_pkg::FSFMUL;
+								7'b0000011:						instruction_o.op  = ariane_pkg::FSFDIV;
+								7'b0000100:	begin						
+										if (instr.rtype.rm==3;b000) instruction_o.op  = ariane_pkg::FSFMIN; 
+										else if (instr.rtype.rm==3'b001) instruction_o.op  = ariane_pkg::FSFMAX;
+										else illegal_instr = 1'b1;
+								end
+								7'b0000101:						begin
+									instruction_o.op  = ariane_pkg::FSFCVT_F2F;
 									instruction_o.rs2 = instr.rtype.rs1; // tie rs2 to rs1 to be safe (vectors use rs2)
                 	imm_select = IIMM;  // rs2 holds part of the intruction
 								end
+								
+								7'b0000111: begin
+                instruction_o.op = ariane_pkg::FSFCVT_I2F;  // fcvt.ifmt.fmt - FP to Int Conversion
+                imm_select       = IIMM;  // rs2 holds part of the instruction
+                if (|instr.rftype.rs2[24:22])
+                  illegal_instr = 1'b1;  // bits [21:20] used, other bits must be 0
+              end
+              7'b0001000: begin
+                instruction_o.op = ariane_pkg::FSFCVT_F2I;  // fcvt.fmt.ifmt - Int to FP Conversion
+                imm_select       = IIMM;  // rs2 holds part of the instruction
+                if (|instr.rftype.rs2[24:22])
+                  illegal_instr = 1'b1;  // bits [21:20] used, other bits must be 0
+              end
                default:           		illegal_instr = 1'b1;
               endcase
             end
