@@ -1,4 +1,4 @@
-// Copyright 2018 ETH Zurich and University of Bologna.
+ // Copyright 2018 ETH Zurich and University of Bologna.
 // Copyright and related rights are licensed under the Solderpad Hardware
 // License, Version 0.51 (the "License"); you may not use this file except in
 // compliance with the License.  You may obtain a copy of the License at
@@ -332,7 +332,7 @@ module fpu_wrap
         // SUB8 Division
         FSFDIV:    fpu_op_d = fpnew_pkg::DIV;
 				// SUB8 Conversion
-				FSFCVT: fpu_op_d = fpnew_pkg::F2F;
+				FSFCVT_F2F: fpu_op_d = fpnew_pkg::F2F;
 				FSFSGNJ: begin
           fpu_op_d = fpnew_pkg::SGNJ;
           fpu_rm_d = {1'b0, fpu_rm_i[1:0]};  // mask out AH encoding bit
@@ -341,7 +341,7 @@ module fpu_wrap
 
 
 				// Special case for SUB8 instructions
-  			if (fu_data_i.operation inside {FSFADD, FSFSUB, FSFMUL, FSFDIV, FSFCVT, FSFSGNJ}) begin
+  			if (fu_data_i.operation inside {FSFADD, FSFSUB, FSFMUL, FSFDIV, FSFCVT_F2F, FSFSGNJ}) begin
 					unique case (sub8_csr_sft_ex)
               4'b0001: fpu_srcfmt_d = fpnew_pkg::FP8;
               4'b0010: fpu_srcfmt_d = fpnew_pkg::FP8_E4M3;
