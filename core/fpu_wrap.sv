@@ -79,7 +79,7 @@ module fpu_wrap
 
     // Implementation (number of registers etc)
     localparam fpnew_pkg::fpu_implementation_t FPU_IMPLEMENTATION = '{
-        PipeRegs: '{  // FP32, FP64, FP16, FP8, FP16alt, FP8_E4M3, FP4
+        PipeRegs: '{  // FP32, FP64, FP16, FP8, FP16alt, FP8_E4M3, FP4, FP6_E3M2, FP6_E2M3
             '{
                 unsigned'(LAT_COMP_FP32),
                 unsigned'(LAT_COMP_FP64),
@@ -87,7 +87,9 @@ module fpu_wrap
                 unsigned'(LAT_COMP_FP8),
                 unsigned'(LAT_COMP_FP16ALT), 
                 unsigned'(LAT_COMP_FP8_E4M3), 
-                unsigned'(LAT_COMP_FP4)
+                unsigned'(LAT_COMP_FP4), 
+								unsigned'(LAT_COMP_FP6_E3M2), 
+								unsigned'(LAT_COMP_FP6_E2M3)
             },  // ADDMUL
             '{default: unsigned'(LAT_DIVSQRT)},  // DIVSQRT
             '{default: unsigned'(LAT_NONCOMP)},  // NONCOMP
@@ -345,16 +347,16 @@ module fpu_wrap
 					unique case (sub8_csr_sft_ex)
               4'b0001: fpu_srcfmt_d = fpnew_pkg::FP8;
               4'b0010: fpu_srcfmt_d = fpnew_pkg::FP8_E4M3;
-              //4'b0011: fpu_srcfmt_d = fpnew_pkg:: //future FP6
-             	//4'b0100: fpu_srcfmt_d = fpnew_pkg:: //future FP6
+              4'b0011: fpu_srcfmt_d = fpnew_pkg::FP6_E3M2;
+             	4'b0100: fpu_srcfmt_d = fpnew_pkg::FP6_E2M3;
 							4'b0101: fpu_srcfmt_d = fpnew_pkg::FP4;
             	default: ;  // Do nothing
            endcase
 					unique case (sub8_csr_eft_ex)
               4'b0001: fpu_dstfmt_d = fpnew_pkg::FP8;
               4'b0010: fpu_dstfmt_d = fpnew_pkg::FP8_E4M3;
-              //4'b0011: fpu_dstfmt_d = fpnew_pkg:: //future FP6
-             	//4'b0100: fpu_dstfmt_d = fpnew_pkg:: //future FP6
+              4'b0011: fpu_dstfmt_d = fpnew_pkg::FP6_E3M2;
+             	4'b0100: fpu_dstfmt_d = fpnew_pkg::FP6_E2M3;
 							4'b0101: fpu_dstfmt_d = fpnew_pkg::FP4;
             	default: ;  // Do nothing
            endcase
@@ -381,6 +383,14 @@ module fpu_wrap
 								fpu_srcfmt_d = fpnew_pkg::FP8_E4M3;
 								fpu_dstfmt_d = fpnew_pkg::FP8_E4M3;
               end
+							4'b0011: begin
+								fpu_srcfmt_d = fpnew_pkg::FP6_E3M2;
+								fpu_dstfmt_d = fpnew_pkg::FP6_E3M2;
+							end
+             	4'b0100: begin
+								fpu_srcfmt_d = fpnew_pkg::FP6_E2M3;
+								fpu_dstfmt_d = fpnew_pkg::FP6_E2M3;
+							end
 							4'b0101: begin
 								fpu_srcfmt_d = fpnew_pkg::FP4;
 								fpu_dstfmt_d = fpnew_pkg::FP4;
