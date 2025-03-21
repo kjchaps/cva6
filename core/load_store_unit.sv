@@ -746,6 +746,20 @@ module load_store_unit
             data_misaligned = 1'b1;
           end
         end
+				FSFL: begin
+					if (sub8_csr_eft_ex == 4'b0011 || sub8_csr_eft_ex == 4'b0100) begin
+						if (lsu_ctrl.vaddr[1:0] == 1'b11) begin
+            	data_misaligned = 1'b1;
+          	end
+					end
+				end
+				FSFS: begin
+					if (sub8_csr_sft_ex == 4'b0011 || sub8_csr_sft_ex == 4'b0100) begin
+						if (lsu_ctrl.vaddr[1:0] == 1'b11) begin
+            	data_misaligned = 1'b1;
+          	end
+					end
+				end
         // byte -> is always aligned
         default: ;
       endcase
