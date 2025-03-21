@@ -534,9 +534,9 @@ module load_unit
 							unique case (sub8_csr_eft_ex) begin
 								4'b0001: result_o = {{CVA6Cfg.XLEN - 32 + 24{rdata_sign_bit}}, shifted_data[7:0]}; //FP8
               	4'b0010: result_o = {{CVA6Cfg.XLEN - 32 + 24{rdata_sign_bit}}, shifted_data[7:0]}; //FP8_E4M3;
-              	4'b0011: result_o = {{CVA6Cfg.XLEN - 32 + 26{rdata_sign_bit}}, shifted_data[5:0]};//FP6_E3M2;
-             		4'b0100: result_o = {{CVA6Cfg.XLEN - 32 + 26{rdata_sign_bit}}, shifted_data[5:0]};//FP6_E2M3;
-								4'b0101: result_o = {{CVA6Cfg.XLEN - 32 + 28{rdata_sign_bit}}, shifted_data[3:0]}; //FP4;
+              	4'b0011: result_o = {{CVA6Cfg.XLEN - 32 + 8{rdata_sign_bit}}, shifted_data[23:0]};//FP6_E3M2;
+             		4'b0100: result_o = {{CVA6Cfg.XLEN - 32 + 8{rdata_sign_bit}}, shifted_data[23:0]};//FP6_E2M3;
+								4'b0101: result_o = {{CVA6Cfg.XLEN - 32 + 24{rdata_sign_bit}}, shifted_data[7:0]}; //FP4;
 								default: begin
               		result_o = shifted_data[CVA6Cfg.XLEN-1:0];
             		end
