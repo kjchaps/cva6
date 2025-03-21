@@ -1371,8 +1371,39 @@ module decoder
                	     illegal_instr = 1'b1;
                	 end else begin
                	   if (!(instr.rtype.rm inside {[3'b000 : 3'b010]})) illegal_instr = 1'b1;
-               	 end
-              end
+               	 	end
+              	end
+								7'b00001101: begin
+                	instruction_o.rs2 = instr.rtype.rs1; // set rs2 = rs1 so we can map FMV to SGNJ in the unit
+                	check_fprm = 1'b0;  // instruction encoded in rm, do the check here
+                	if (instr.rtype.rm == 3'b000 || (CVA6Cfg.XF16ALT && instr.rftype.rm == 3'b100)) // FP16ALT has separate encoding
+                 	 instruction_o.op = ariane_pkg::FSFMV_F2X;  // fmv.ifmt.fmt - FPR to GPR Move
+                	else if (instr.rtype.rm == 3'b001 || (CVA6Cfg.XF16ALT && instr.rftype.rm == 3'b101)) // FP16ALT has separate encoding
+                 	 instruction_o.op = ariane_pkg::FSFCLASS;  // fclass.fmt - sub FP8 FP Classify
+                	else illegal_instr = 1'b1;
+                	// rs2 must be zero
+                	if (instr.rftype.rs2 != 5'b00000) illegal_instr = 1'b1;
+              	end
+								7'b0001000: begin
+                	instruction_o.op = ariane_pkg::FSFMV_X2F;  // fmv.fmt.ifmt - GPR to FPR Move
+                	instruction_o.rs2 = instr.rtype.rs1; // set rs2 = rs1 so we can map FMV to SGNJ in the unit
+                	check_fprm = 1'b0;  // instruction encoded in rm, do the check here
+                	if (!(instr.rtype.rm == 3'b000 || (CVA6Cfg.XF16ALT && instr.rftype.rm == 3'b100)))
+                	  illegal_instr = 1'b1;
+                	// rs2 must be zero
+                	if (instr.rtype.rs2 != 5'b00000) illegal_instr = 1'b1;
+              	end
+								7'b0001011: begin
+                	instruction_o.op = ariane_pkg::FCMP;  // feq/flt/fle.fmt - FP Comparisons
+                	check_fprm       = 1'b0;  // instruction encoded in rm, do the check here
+                	if (CVA6Cfg.XF16ALT) begin       // FP16ALT instructions encoded in rm separately (static)
+                 	 if (!(instr.rtype.rm inside {[3'b000 : 3'b010], [3'b100 : 3'b110]}))
+                  	  illegal_instr = 1'b1;
+                	end else begin
+                	  if (!(instr.rtype.rm inside {[3'b000 : 3'b010]})) illegal_instr = 1'b1;
+                	end
+              	end
+
                default:           		illegal_instr = 1'b1;
               endcase
             
