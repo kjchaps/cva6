@@ -340,6 +340,34 @@ module fpu_wrap
           fpu_rm_d = {1'b0, fpu_rm_i[1:0]};  // mask out AH encoding bit
           check_ah = 1'b1;  // AH has RM MSB encoding
         end
+				FSFMV_F2X: begin
+          fpu_op_d        = fpnew_pkg::SGNJ;
+          fpu_rm_d        = 3'b011;  // passthrough without checking nan-box
+          fpu_op_mod_d    = 1'b1;  // no NaN-Boxing
+          check_ah        = 1'b1;  // AH has RM MSB encoding
+          vec_replication = 1'b0;  // no replication, we set second operand
+        end
+        // Move from GPR to FPR - mapped to NOP since no recoding
+        FSFMV_X2F: begin
+          fpu_op_d        = fpnew_pkg::SGNJ;
+          fpu_rm_d        = 3'b011;  // passthrough without checking nan-box
+          check_ah        = 1'b1;  // AH has RM MSB encoding
+          vec_replication = 1'b0;  // no replication, we set second operand
+        end
+        // Scalar Comparisons - op encoded in rm (000-010)
+        FSFCMP: begin
+          fpu_op_d = fpnew_pkg::CMP;
+          fpu_rm_d = {1'b0, fpu_rm_i[1:0]};  // mask out AH encoding bit
+          check_ah = 1'b1;  // AH has RM MSB encoding
+        end
+        // Classification
+       FSFCLASS: begin
+          fpu_op_d = fpnew_pkg::CLASSIFY;
+          fpu_rm_d = {
+            1'b0, fpu_rm_i[1:0]
+          };  // mask out AH encoding bit - CLASS doesn't care anyways
+          check_ah = 1'b1;  // AH has RM MSB encoding
+        end
 
 
 				// Special case for SUB8 instructions
