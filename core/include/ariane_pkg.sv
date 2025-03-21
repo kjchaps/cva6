@@ -411,11 +411,15 @@ package ariane_pkg;
     FMV_F2X,
     FMV_X2F,
 		FSFCVT_F2F, //sub8 convert
-		FSFGNJ, 
+		FSFGNJ, // sub8 sign injection
+		FSFMV_F2X,// sub8 move float to int 
+		FSFMV_X2F, // su8 move int to float
     // Floating-Point Compare Instructions
     FCMP,
+		FSFCMP, //sub8 comparison
     // Floating-Point Classify Instruction
     FCLASS,
+		FSFCLASS, // sub8 classification
     // Vectorial Floating-Point Instructions that don't directly map onto the scalar ones
     VFMIN,
     VFMAX,
@@ -530,8 +534,11 @@ package ariane_pkg;
       FSGNJ,  // Sign Injections
 			FSFGNJ, // sub FP8 sign injection
       FMV_F2X,  // FPR-GPR Moves
+			FSFMV_F2X, // sub FP8 move
       FCMP,  // Comparisons
+			FSFCMP, // sub FP8 comparisons
       FCLASS,  // Classifications
+			FSFCLASS, // sub FP8 classifications 
       [VFMIN : VFCPKCD_D],  // Additional Vectorial FP ops
       ACCEL_OP_FS1:
       return 1'b1;  // Accelerator instructions
@@ -547,12 +554,13 @@ package ariane_pkg;
 			FSFS, // sub 8 FP store
       [FADD : FMIN_MAX],  // Computational Operations (no sqrt)
 			[FSFADD : FSFMIN_MAX], // sub FP8 computational, included ADD/SUB since IMM prohibited for RS1
-			//FSFCVT_F2F, // sub FP8 F2F
+			FSFCVT_F2F, // sub FP8 F2F
       [FMADD : FNMADD],  // Fused Computational Operations
       FCVT_F2F,  // Vectorial F2F Conversions requrie target
       [FSGNJ : FMV_F2X],  // Sign Injections and moves mapped to SGNJ
 			FSFGNJ, // sub FP8 sign injection
       FCMP,  // Comparisons
+			FSFCMP, // sub FP8 comparisons
       [VFMIN : VFCPKCD_D]:
       return 1'b1;  // Additional Vectorial FP ops
       default: return 1'b0;  // all other ops
