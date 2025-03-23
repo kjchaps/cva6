@@ -1376,9 +1376,9 @@ module decoder
 								7'b00001101: begin
                 	instruction_o.rs2 = instr.rtype.rs1; // set rs2 = rs1 so we can map FMV to SGNJ in the unit
                 	check_fprm = 1'b0;  // instruction encoded in rm, do the check here
-                	if (instr.rtype.rm == 3'b000 || (CVA6Cfg.XF16ALT && instr.rftype.rm == 3'b100)) // FP16ALT has separate encoding
+                	if (instr.rtype.rm == 3'b000 || (CVA6Cfg.XF16ALT && instr.rtype.rm == 3'b100)) // FP16ALT has separate encoding
                  	 instruction_o.op = ariane_pkg::FSFMV_F2X;  // fmv.ifmt.fmt - FPR to GPR Move
-                	else if (instr.rtype.rm == 3'b001 || (CVA6Cfg.XF16ALT && instr.rftype.rm == 3'b101)) // FP16ALT has separate encoding
+                	else if (instr.rtype.rm == 3'b001 || (CVA6Cfg.XF16ALT && instr.rtype.rm == 3'b101)) // FP16ALT has separate encoding
                  	 instruction_o.op = ariane_pkg::FSFCLASS;  // fclass.fmt - sub FP8 FP Classify
                 	else illegal_instr = 1'b1;
                 	// rs2 must be zero
@@ -1437,18 +1437,24 @@ module decoder
           if (CVA6Cfg.FpPresent && fs_i != riscv::Off && ((CVA6Cfg.RVH && (!v_i || vfs_i != riscv::Off)) || !CVA6Cfg.RVH)) begin // only generate decoder if FP extensions are enabled (static)
             // decode FP instruction
             if(instr.itype.funct3 == 3'b000) begin 
-							instruction_o.op = ariane_pkg::FSFL; 
 							instruction_o.fu = LOAD;
             	imm_select = IIMM;
             	instruction_o.rs1 = instr.itype.rs1;
             	instruction_o.rd = instr.itype.rd;
+							\\here we check if EFT is FP4 or FP8, then use load byte
+							if() instruction_o.op = ariane_pkg::FSB;
+           		else instruction_o.op = ariane_pkg::FSFL; 
+
 						end
 						else if(instr.rtype.funct3 == 3'b0001) begin
-							instruction_o.op = ariane_pkg::FSFS; 
+
 							instruction_o.fu = STORE;
             	imm_select = SIMM;
             	instruction_o.rs1 = instr.rtype.rs1;
             	instruction_o.rs2 = instr.rtype.rs2;
+							//here we check if EFT is FP4 or FP8, then use store byte.
+							if() instruction_o.op = ariane_pkg::FSB;
+           		else instruction_o.op = ariane_pkg::FSFS; 
 						end
 						else begin
 							illegal_instr = 1'b1;
