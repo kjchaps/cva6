@@ -172,9 +172,9 @@ module csr_regfile
     //jvt output
     output jvt_t jvt_o,
 		// sub8 source format - EX STAGE
-		output logic [3:0] fpu_sub8_sft_i,
+		output logic [3:0] fpu_sub8_sft_o,
 		// sub8 destination format - EX STAGE
-		output logic [3:0] fpu_sub8_eft_i
+		output logic [3:0] fpu_sub8_eft_o
 );
 
   localparam logic [63:0] SMODE_STATUS_READ_MASK = ariane_pkg::smode_status_read_mask(CVA6Cfg);
@@ -200,9 +200,9 @@ module csr_regfile
   } hgatp_t;
 
 		// sub8 source format 
-		logic [3:0] fpu_sub8_sft_i;
+		logic [3:0] fpu_sub8_sft_o;
 		// sub8 destination format 
-		logic [3:0] fpu_sub8_eft_i;
+		logic [3:0] fpu_sub8_eft_o;
 
   // internal signal to keep track of access exceptions
   logic read_access_exception, update_access_exception, privilege_violation;
@@ -2496,8 +2496,8 @@ module csr_regfile
     // returned in the rd destination register contains the logical-OR of the software-writable
     // bit and the interrupt signal from the interrupt controller.
     csr_rdata_o = csr_rdata;
-		fpu_sub8_eft_i = fcsr_q.eft;
-  	fpu_sub8_sft_i = fcsr_q.sft;
+		fpu_sub8_eft_o = fcsr_q.eft;
+  	fpu_sub8_sft_o = fcsr_q.sft;
     unique case (conv_csr_addr.address)
       riscv::CSR_MIP:
       csr_rdata_o = csr_rdata | ({{CVA6Cfg.XLEN - 1{1'b0}}, CVA6Cfg.RVS && irq_i[1]} << riscv::IRQ_S_EXT);
