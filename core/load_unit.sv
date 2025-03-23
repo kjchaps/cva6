@@ -79,7 +79,7 @@ module load_unit
     output dcache_req_i_t req_port_o,
     // Presence of non-idempotent operations in the D$ write buffer - CACHES
     input logic dcache_wbuffer_not_ni_i,
-    input  logic       [                      3:0] sub8_csr_eft_ex // from EX_Stage
+    input  logic       [                      3:0] sub8_csr_eft_i // from EX_Stage
 );
   enum logic [3:0] {
     IDLE,
@@ -531,7 +531,7 @@ module load_unit
               result_o = {{CVA6Cfg.XLEN - 32 + 24{rdata_sign_bit}}, shifted_data[7:0]};
             end
 						ariane_pkg::FSFL: begin
-							unique case (sub8_csr_eft_ex) begin
+							unique case (sub8_csr_eft_i) begin
 								4'b0001: result_o = {{CVA6Cfg.XLEN - 32 + 24{rdata_sign_bit}}, shifted_data[7:0]}; //FP8
               	4'b0010: result_o = {{CVA6Cfg.XLEN - 32 + 24{rdata_sign_bit}}, shifted_data[7:0]}; //FP8_E4M3;
               	4'b0011: result_o = {{CVA6Cfg.XLEN - 32 + 8{rdata_sign_bit}}, shifted_data[23:0]};//FP6_E3M2;
