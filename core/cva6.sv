@@ -585,8 +585,8 @@ module cva6
   riscv::pmpcfg_t [avoid_neg(CVA6Cfg.NrPMPEntries-1):0] pmpcfg;
   logic [avoid_neg(CVA6Cfg.NrPMPEntries-1):0][CVA6Cfg.PLEN-3:0] pmpaddr;
   logic [31:0] mcountinhibit_csr_perf;
-	logic [3:0] sub8_csr_sft_ex;
-	logic [3:0] sub8_csr_eft_ex;
+	logic [3:0] sub8_csr_sft;
+	logic [3:0] sub8_csr_eft;
 
   //jvt
   jvt_t jvt;
@@ -920,8 +920,8 @@ module cva6
       .rvfi_commit_pointer_o(rvfi_commit_pointer),
       .rvfi_rs1_o           (rvfi_rs1),
       .rvfi_rs2_o           (rvfi_rs2), 
-			.sub8_csr_sft_ex			(sub8_csr_sft_ex), 
-			.sub8_csr_eft_ex			(sub8_csr_sft_ex)
+			.sub8_csr_sft_i			(sub8_csr_sft), 
+			.sub8_csr_eft_i			(sub8_csr_sft)
   );
 
   // ---------
@@ -1068,8 +1068,8 @@ module cva6
       .rvfi_lsu_ctrl_o         (rvfi_lsu_ctrl),
       .rvfi_mem_paddr_o        (rvfi_mem_paddr), 
 			//sub FP8
-			.sub8_csr_sft_ex					(sub8_csr_sft_ex),							// from CSR
-			.sub8_csr_eft_ex					(sub8_csr_eft_ex)								// from CSR
+			.sub8_csr_sft_i					(sub8_csr_sft),							// from CSR
+			.sub8_csr_eft_i					(sub8_csr_eft)								// from CSR
   );
 
   // ---------
@@ -1209,8 +1209,8 @@ module cva6
       .jvt_o                   (jvt),
       //RVFI
       .rvfi_csr_o              (rvfi_csr), 
-			.sub8_csr_sft_ex					(sub8_csr_sft_ex),
-			.sub8_csr_eft_ex					(sub8_csr_eft_ex)
+			.sub8_csr_sft_o					(sub8_csr_sft),
+			.sub8_csr_eft_o					(sub8_csr_eft)
   );
 
   // ------------------------
