@@ -91,8 +91,8 @@ module decoder
     // Is a control flow instruction - ISSUE_STAGE
     output logic is_control_flow_instr_o,
 		//EFT SFT from CSR regfile
-		input [3:0] sub8_csr_sft_dec, //CSR REGFILE
-		input [3:0] sub8_csr_eft_dec //CSR REGFILE
+		input [3:0] sub8_csr_sft_i, //CSR REGFILE
+		input [3:0] sub8_csr_eft_i //CSR REGFILE
 );
   logic illegal_instr;
   logic illegal_instr_bm;
@@ -1445,7 +1445,7 @@ module decoder
             	instruction_o.rs1 = instr.itype.rs1;
             	instruction_o.rd = instr.itype.rd;
 							\\here we check if EFT is FP4 or FP8, then use load byte
-							if (sub8_csr_eft_dec == 4'b0001 || sub8_csr_eft_dec == 4'b0010 || sub8_csr_eft_dec == 4'b0101) instruction_o.op = ariane_pkg::FLB;
+							if (sub8_csr_eft_i == 4'b0001 || sub8_csr_eft_i == 4'b0010 || sub8_csr_eft_i == 4'b0101) instruction_o.op = ariane_pkg::FLB;
            		else instruction_o.op = ariane_pkg::FSFL; 
 
 						end
@@ -1456,7 +1456,7 @@ module decoder
             	instruction_o.rs1 = instr.rtype.rs1;
             	instruction_o.rs2 = instr.rtype.rs2;
 							//here we check if EFT is FP4 or FP8, then use store byte.
-							if (sub8_csr_sft_dec == 4'b0001 || sub8_csr_sft_dec == 4'b0010 || sub8_csr_sft_dec == 4'b0101) instruction_o.op = ariane_pkg::FSB;
+							if (sub8_csr_sft_i == 4'b0001 || sub8_csr_sft_i == 4'b0010 || sub8_csr_sft_i == 4'b0101) instruction_o.op = ariane_pkg::FSB;
            		else instruction_o.op = ariane_pkg::FSFS; 
 						end
 						else begin
