@@ -237,9 +237,9 @@ module ex_stage
     // Information dedicated to RVFI - RVFI
     output [CVA6Cfg.PLEN-1:0] rvfi_mem_paddr_o, 
 		// sub8 source format - CSR regfile
-		input logic [3:0] sub8_csr_sft_ex,
+		input logic [3:0] sub8_csr_sft_i,
 		// sub8 destination format - CSR regfile
-		input logic [3:0] sub8_csr_eft_ex
+		input logic [3:0] sub8_csr_eft_i
 );
 
 
@@ -452,8 +452,8 @@ module ex_stage
           .result_o(fpu_result),
           .fpu_valid_o(fpu_valid),
           .fpu_exception_o, 
-					.sub8_csr_sft_ex(sub8_csr_sft_ex),
-					.sub8_csr_eft_ex(sub8_csr_eft_ex)
+					.sub8_csr_sft_i(sub8_csr_sft_i),
+					.sub8_csr_eft_i(sub8_csr_eft_i)
       );
     end else begin : no_fpu_gen
       assign fpu_ready_o     = '0;
@@ -610,8 +610,8 @@ module ex_stage
       .pmpaddr_i,
       .rvfi_lsu_ctrl_o,
       .rvfi_mem_paddr_o, 
-			.sub8_csr_sft_ex(sub8_csr_sft_ex),
-			.sub8_csr_eft_ex(sub8_csr_eft_ex)
+			.sub8_csr_sft_i(sub8_csr_sft_i),
+			.sub8_csr_eft_i(sub8_csr_eft_i)
   );
 
   if (CVA6Cfg.CvxifEn) begin : gen_cvxif
