@@ -616,6 +616,62 @@
 #define MASK_FNMSUB_Q  0x600007f
 #define MATCH_FNMADD_Q 0x600004f
 #define MASK_FNMADD_Q  0x600007f
+// Load and Store Instructions
+#define MATCH_SFL        0x0000000A
+#define MASK_SFL         0x0000707F
+
+#define MATCH_SFS        0x0000004A
+#define MASK_SFS         0x0000707F
+
+// Computation Instructions
+#define MATCH_SFADD      0x00000002
+#define MASK_SFADD       0xFE00007F
+
+#define MATCH_SFSUB      0x02000002
+#define MASK_SFSUB       0xFE00007F
+
+#define MATCH_SFMUL      0x04000002
+#define MASK_SFMUL       0xFE00007F
+
+#define MATCH_SFDIV      0x06000002
+#define MASK_SFDIV       0xFE00007F
+
+#define MATCH_SFMIN      0x08000002
+#define MASK_SFMIN       0xFE00707F
+
+#define MATCH_SFMAX      0x08001002
+#define MASK_SFMAX       0xFE00707F
+
+#define MATCH_SFCVT      0x0A000002
+#define MASK_SFCVT       0xFFF0007F
+
+#define MATCH_SFSGNJ_S   0x0C000002
+#define MASK_SFSGNJ_S    0xFE00707F
+
+#define MATCH_SFSGNJN_S  0x0C001002
+#define MASK_SFSGNJN_S   0xFE00707F
+
+#define MATCH_SFSGNJX_S  0x0C002002
+#define MASK_SFSGNJX_S   0xFE00707F
+
+#define MATCH_SFMV_X_B   0x0E000002
+#define MASK_SFMV_X_B    0xFFF0707F
+
+#define MATCH_SFMV_B_X   0x10000002
+#define MASK_SFMV_B_X    0xFFF0707F
+
+#define MATCH_SFCLASS_S  0x0E001002
+#define MASK_SFCLASS_S   0xFFF0707F
+
+#define MATCH_SFEQ_S     0x22002002
+#define MASK_SFEQ_S      0xFE00707F
+
+#define MATCH_SFLT_S     0x22001002
+#define MASK_SFLT_S      0xFE00707F
+
+#define MATCH_SFLE_S     0x22000002
+#define MASK_SFLE_S      0xFE00707F
+
 #define MATCH_C_NOP 0x1
 #define MASK_C_NOP  0xffff
 #define MATCH_C_ADDI16SP 0x6101
