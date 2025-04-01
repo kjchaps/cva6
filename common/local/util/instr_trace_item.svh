@@ -281,25 +281,32 @@ class instr_trace_item #(
             instr_tracer_pkg::INSTR_FCVT_I2F: s = this.printFpSpecialInstr(); // these are a mess to do nicely
 
 						// sub FP8 including L/S
-						instr_tracer_pkg::SFS
-						instr_tracer_pkg::SFL
-						instr_tracer_pkg::INSTR_SFADD 
-						instr_tracer_pkg::INSTR_SFSUB
-						instr_tracer_pkg::INSTR_SFMUL
-						instr_tracer_pkg::INSTR_SFDIV 
-						instr_tracer_pkg::INSTR_SFMIN
-						instr_tracer_pkg::INSTR_SFMAX 
-						instr_tracer_pkg::INSTR_SFCVT
-						instr_tracer_pkg::INSTR_SFSGNJ_S
-						instr_tracer_pkg::INSTR_SFSNJN_S
-						instr_tracer_pkg::INSTR_SFSGNJX_S
-						instr_tracer_pkg::INSTR_SFMV_X_B
-						instr_tracer_pkg::INSTR_SFMV_B_X
-						instr_tracer_pkg::INSTR_SFCLASS_X
-						instr_tracer_pkg::INSTR_SFEQ_S
-						instr_tracer_pkg::INSTR_SFLT_S 
-						instr_tracer_pkg::INSTR_SFLE_S 
-
+						// there are five different formats here (A, B, C, D, E)- you can see these match up to the masks in the encoding.h bootrom
+						// A: [14:12], [6:0]
+						// B: [31:25], [6:0]
+						// C: [31:25], [14:12], [6:0]
+						// D: [31:25], [24:20], [6:0]
+						// E: [31:25], [24:20], [14:12], [6:0]
+						// these then correspond to their printing
+						// load and store must still be sent to the L/S VA and PA printing section
+						instr_tracer_pkg::SFS //A
+						instr_tracer_pkg::SFL //A
+						instr_tracer_pkg::INSTR_SFADD //B
+						instr_tracer_pkg::INSTR_SFSUB //B
+						instr_tracer_pkg::INSTR_SFMUL //B
+						instr_tracer_pkg::INSTR_SFDIV //B
+						instr_tracer_pkg::INSTR_SFMIN //C
+						instr_tracer_pkg::INSTR_SFMAX //C
+						instr_tracer_pkg::INSTR_SFCVT //D
+						instr_tracer_pkg::INSTR_SFSGNJ_S //C
+						instr_tracer_pkg::INSTR_SFSGNJN_S //C
+						instr_tracer_pkg::INSTR_SFSGNJX_S  //C
+						instr_tracer_pkg::INSTR_SFMV_X_B //E
+						instr_tracer_pkg::INSTR_SFMV_B_X //E
+						instr_tracer_pkg::INSTR_SFCLASS_X //E
+						instr_tracer_pkg::INSTR_SFEQ_S //C
+						instr_tracer_pkg::INSTR_SFLT_S //C
+						instr_tracer_pkg::INSTR_SFLE_S //C
 
             // FENCE
             instr_tracer_pkg::INSTR_FENCE:    s = this.printMnemonic("fence");
