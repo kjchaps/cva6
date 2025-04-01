@@ -289,6 +289,9 @@ class instr_trace_item #(
 						// E: [31:25], [24:20], [14:12], [6:0]
 						// these then correspond to their printing
 						// load and store must still be sent to the L/S VA and PA printing section
+						// at the moment this does not connect to our FCSR
+						// so FP formats are not included
+
 						instr_tracer_pkg::SFS //A
 						instr_tracer_pkg::SFL //A
 						instr_tracer_pkg::INSTR_SFADD //B
