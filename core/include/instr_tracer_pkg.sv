@@ -143,7 +143,7 @@ package instr_tracer_pkg;
 	parameter INSTR_SFMAX  			= {7'b0000100, 5'b?, 5'b?, 3'b001, 5'b?, riscv::OpcodeCustomArithmeticSubFp};
 	parameter INSTR_SFCVT  			= {7'b0000101, 5'b00000, 5'b?, 3'b?, 5'b?, riscv::OpcodeCustomArithmeticSubFp};
 	parameter INSTR_SFSGNJ_S 	= {7'b0001010, 5'b?, 5'b?, 3'b000, 5'b?, riscv::OpcodeCustomArithmeticSubFp};
-	parameter INSTR_SFSNJN_S 	= {7'b0001010, 5'b?, 5'b?, 3'b001, 5'b?, riscv::OpcodeCustomArithmeticSubFp};
+	parameter INSTR_SFSGNJN_S 	= {7'b0001010, 5'b?, 5'b?, 3'b001, 5'b?, riscv::OpcodeCustomArithmeticSubFp};
 	parameter INSTR_SFSGNJX_S 	= {7'b0001010, 5'b?, 5'b?, 3'b010, 5'b?, riscv::OpcodeCustomArithmeticSubFp};
 	parameter INSTR_SFMV_X_B 	= {7'b0000111, 5'b00000, 5'b?, 3'b000, 5'b?, riscv::OpcodeCustomArithmeticSubFp};
 	parameter INSTR_SFMV_B_X 	= {7'b0001000, 5'b00000, 5'b?, 3'b000, 5'b?, riscv::OpcodeCustomArithmeticSubFp};
