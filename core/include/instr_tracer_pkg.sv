@@ -134,6 +134,26 @@ package instr_tracer_pkg;
   parameter INSTR_FCVT_F2I = {5'b11000, 2'b?, 5'b000??, 5'b?, 3'b?, 5'b?, riscv::OpcodeOpFp};
   parameter INSTR_FCVT_I2F = {5'b11010, 2'b?, 5'b000??, 5'b?, 3'b?, 5'b?, riscv::OpcodeOpFp};
 
+	//sub FP8
+	parameter INSTR_SFADD  			= {7'b0000000, 5'b?, 5'b?, 3'b?, 5'b?, riscv::OpcodeCustomArithmeticSubFp};
+	parameter INSTR_SFSUB  			= {7'b0000001, 5'b?, 5'b?, 3'b?, 5'b?, riscv::OpcodeCustomArithmeticSubFp};
+	parameter INSTR_SFMUL  			= {7'b0000010, 5'b?, 5'b?, 3'b?, 5'b?, riscv::OpcodeCustomArithmeticSubFp};
+	parameter INSTR_SFDIV  			= {7'b0000011, 5'b?, 5'b?, 3'b?, 5'b?, riscv::OpcodeCustomArithmeticSubFp};
+	parameter INSTR_SFMIN  			= {7'b0000100, 5'b?, 5'b?, 3'b000, 5'b?, riscv::OpcodeCustomArithmeticSubFp};
+	parameter INSTR_SFMAX  			= {7'b0000100, 5'b?, 5'b?, 3'b001, 5'b?, riscv::OpcodeCustomArithmeticSubFp};
+	parameter INSTR_SFCVT  			= {7'b0000101, 5'b00000, 5'b?, 3'b?, 5'b?, riscv::OpcodeCustomArithmeticSubFp};
+	parameter INSTR_SFSGNJ_S 	= {7'b0001010, 5'b?, 5'b?, 3'b000, 5'b?, riscv::OpcodeCustomArithmeticSubFp};
+	parameter INSTR_SFSNJN_S 	= {7'b0001010, 5'b?, 5'b?, 3'b001, 5'b?, riscv::OpcodeCustomArithmeticSubFp};
+	parameter INSTR_SFSGNJX_S 	= {7'b0001010, 5'b?, 5'b?, 3'b010, 5'b?, riscv::OpcodeCustomArithmeticSubFp};
+	parameter INSTR_SFMV_X_B 	= {7'b0000111, 5'b00000, 5'b?, 3'b000, 5'b?, riscv::OpcodeCustomArithmeticSubFp};
+	parameter INSTR_SFMV_B_X 	= {7'b0001000, 5'b00000, 5'b?, 3'b000, 5'b?, riscv::OpcodeCustomArithmeticSubFp};
+	parameter INSTR_SFCLASS_X 	= {7'b0000111, 5'b00000, 5'b?, 3'b001, 5'b?, riscv::OpcodeCustomArithmeticSubFp};
+	parameter INSTR_SFEQ_S  		= {7'b0001011, 5'b?, 5'b?, 3'b?, 5'b010, riscv::OpcodeCustomArithmeticSubFp};
+	parameter INSTR_SFLT_S  		= {7'b0001011, 5'b?, 5'b?, 3'b?, 5'b001, riscv::OpcodeCustomArithmeticSubFp};
+	parameter INSTR_SFLE_S  		= {7'b0001011, 5'b?, 5'b?, 3'b?, 5'b000, riscv::OpcodeCustomArithmeticSubFp};
+
+
+
   // A
   parameter INSTR_AMO = {25'b?, riscv::OpcodeAmo};
 
@@ -197,6 +217,9 @@ package instr_tracer_pkg;
   parameter [31:0] C_ADDIW = 32'b????????????????001???????????01;
   parameter [31:0] C_LDSP = 32'b????????????????011???????????10;
   parameter [31:0] C_SDSP = 32'b????????????????111???????????10;
+  parameter [31:0] FSF = 32'b?????????????????000?????0101011;
+  parameter [31:0] FSL  = 32'b?????????????????001?????0101011;
+
 
 endpackage
 `endif
