@@ -279,6 +279,28 @@ class instr_trace_item #(
             instr_tracer_pkg::INSTR_FMV_X2F,
             instr_tracer_pkg::INSTR_FCVT_F2I,
             instr_tracer_pkg::INSTR_FCVT_I2F: s = this.printFpSpecialInstr(); // these are a mess to do nicely
+
+						// sub FP8 including L/S
+						instr_tracer_pkg::SFS
+						instr_tracer_pkg::SFL
+						instr_tracer_pkg::INSTR_SFADD 
+						instr_tracer_pkg::INSTR_SFSUB
+						instr_tracer_pkg::INSTR_SFMUL
+						instr_tracer_pkg::INSTR_SFDIV 
+						instr_tracer_pkg::INSTR_SFMIN
+						instr_tracer_pkg::INSTR_SFMAX 
+						instr_tracer_pkg::INSTR_SFCVT
+						instr_tracer_pkg::INSTR_SFSGNJ_S
+						instr_tracer_pkg::INSTR_SFSNJN_S
+						instr_tracer_pkg::INSTR_SFSGNJX_S
+						instr_tracer_pkg::INSTR_SFMV_X_B
+						instr_tracer_pkg::INSTR_SFMV_B_X
+						instr_tracer_pkg::INSTR_SFCLASS_X
+						instr_tracer_pkg::INSTR_SFEQ_S
+						instr_tracer_pkg::INSTR_SFLT_S 
+						instr_tracer_pkg::INSTR_SFLE_S 
+
+
             // FENCE
             instr_tracer_pkg::INSTR_FENCE:    s = this.printMnemonic("fence");
             instr_tracer_pkg::INSTR_FENCEI:   s = this.printMnemonic("fence.i");
