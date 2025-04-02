@@ -748,14 +748,14 @@ module load_store_unit
         end
 				FSFL: begin
 					if (sub8_csr_eft_i == 4'b0011 || sub8_csr_eft_i == 4'b0100) begin
-						if (lsu_ctrl.vaddr[1:0] == 1'b11) begin
+						if (lsu_ctrl.vaddr[1:0] == 2'b11) begin
             	data_misaligned = 1'b1;
           	end
 					end
 				end
 				FSFS: begin
 					if (sub8_csr_sft_i == 4'b0011 || sub8_csr_sft_i == 4'b0100) begin
-						if (lsu_ctrl.vaddr[1:0] == 1'b11) begin
+						if (lsu_ctrl.vaddr[1:0] == 2'b11) begin
             	data_misaligned = 1'b1;
           	end
 					end
