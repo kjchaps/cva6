@@ -151,7 +151,7 @@ package instr_tracer_pkg;
 	parameter INSTR_SFEQ_S  		= {7'b0001011, 5'b?, 5'b?, 3'b?, 5'b010, riscv::OpcodeCustomArithmeticSubFp};
 	parameter INSTR_SFLT_S  		= {7'b0001011, 5'b?, 5'b?, 3'b?, 5'b001, riscv::OpcodeCustomArithmeticSubFp};
 	parameter INSTR_SFLE_S  		= {7'b0001011, 5'b?, 5'b?, 3'b?, 5'b000, riscv::OpcodeCustomArithmeticSubFp};
-
+	parameter INSTR_SFLE_S  		= {7'b0001001, 5'b?, 5'b?, 3'b?, 5'b000, riscv::OpcodeCustomArithmeticSubFp};
 
 
   // A
