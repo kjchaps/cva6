@@ -403,6 +403,7 @@ package ariane_pkg;
 		FSFMUL, //sub8 mul
 		FSFDIV, //sub8 div
 		FSFMIN_MAX, //sub8 min
+		FSFMADD, //sub8 madd
     // Floating-Point Conversion and Move Instructions
     FCVT_F2I,
     FCVT_I2F,
@@ -527,7 +528,7 @@ package ariane_pkg;
   function automatic logic is_rs1_fpr(input fu_op op);
     unique case (op) inside
       [FMUL : FNMADD],  // Computational Operations (except ADD/SUB)
-			[FSFADD : FSMIN_MAX], // sub FP8 computational, included ADD/SUB since IMM prohibited for RS1
+			[FSFADD : FSFMADD], // sub FP8 computational, included ADD/SUB since IMM prohibited for RS1
 			FSFCVT_F2F, // sub FP8 F2F
       FCVT_F2I,  // Float-Int Casts
       FCVT_F2F,  // Float-Float Casts
@@ -556,6 +557,7 @@ package ariane_pkg;
 			[FSFADD : FSFMIN_MAX], // sub FP8 computational, included ADD/SUB since IMM prohibited for RS1
 			FSFCVT_F2F, // sub FP8 F2F
       [FMADD : FNMADD],  // Fused Computational Operations
+			FSFMADD, // sub FP8 MADD
       FCVT_F2F,  // Vectorial F2F Conversions requrie target
       [FSGNJ : FMV_F2X],  // Sign Injections and moves mapped to SGNJ
 			FSFGNJ, // sub FP8 sign injection
@@ -587,7 +589,7 @@ package ariane_pkg;
       [FLD : FLB],  // FP Loads
 			FSFL, // sub8 FP load
       [FADD : FNMADD],  // Computational Operations
-			[FSFADD : FSFMIN_MAX], // sub FP8 computational, included ADD/SUB since IMM prohibited for RS1
+			[FSFADD : FSFMADD], // sub FP8 computational, included ADD/SUB since IMM prohibited for RS1
 			FSFCVT_F2F, // sub FP8 F2F
       FCVT_I2F,  // Int-Float Casts
       FCVT_F2F,  // Float-Float Casts
