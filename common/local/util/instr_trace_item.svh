@@ -144,6 +144,8 @@ class instr_trace_item #(
             riscv::CSR_FFLAGS:     return "fflags";
             riscv::CSR_FRM:        return "frm";
             riscv::CSR_FCSR:       return "fcsr";
+						riscv::CSR_SFT: 			 return "sft";
+						riscv::CSR_EFT:				 return "eft"; 
             riscv::CSR_SSTATUS:    return "sstatus";
             riscv::CSR_SIE:        return "sie";
             riscv::CSR_STVEC:      return "stvec";
@@ -310,6 +312,7 @@ class instr_trace_item #(
 						instr_tracer_pkg::INSTR_SFEQ_S //C
 						instr_tracer_pkg::INSTR_SFLT_S //C
 						instr_tracer_pkg::INSTR_SFLE_S //C
+						instr_tracer_pkg::INSTR_SFMADD //C
 
             // FENCE
             instr_tracer_pkg::INSTR_FENCE:    s = this.printMnemonic("fence");
