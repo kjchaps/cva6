@@ -161,9 +161,7 @@ module load_store_unit
     // RVFI inforamtion - RVFI
     output lsu_ctrl_t                    rvfi_lsu_ctrl_o,
     // RVFI information - RVFI
-    output logic      [CVA6Cfg.PLEN-1:0] rvfi_mem_paddr_o, 
-		input  logic       [                      3:0] sub8_csr_sft_i, // from EX_Stage
-    input  logic       [                      3:0] sub8_csr_eft_i // from EX_Stage
+    output logic      [CVA6Cfg.PLEN-1:0] rvfi_mem_paddr_o
 );
 
   // data is misaligned
@@ -545,9 +543,7 @@ module load_store_unit
       .amo_resp_i,
       // to memory arbiter
       .req_port_i           (dcache_req_ports_i[2]),
-      .req_port_o           (dcache_req_ports_o[2]), 
-			//to set sub FP8 size
-			.sub8_csr_sft_i(sub8_csr_sft_i)
+      .req_port_o           (dcache_req_ports_o[2])
   );
 
   // ------------------
@@ -589,9 +585,7 @@ module load_store_unit
       // to memory arbiter
       .req_port_i           (dcache_req_ports_i[1]),
       .req_port_o           (dcache_req_ports_o[1]),
-      .dcache_wbuffer_not_ni_i, 
-			// to set sub FP8 size
-			.sub8_csr_eft_i(sub8_csr_eft_i)
+      .dcache_wbuffer_not_ni_i
   );
 
   // ----------------------------
@@ -746,20 +740,6 @@ module load_store_unit
             data_misaligned = 1'b1;
           end
         end
-				FSFL: begin
-					if (sub8_csr_eft_i == 4'b0011 || sub8_csr_eft_i == 4'b0100) begin
-						if (lsu_ctrl.vaddr[1:0] == 2'b11) begin
-            	data_misaligned = 1'b1;
-          	end
-					end
-				end
-				FSFS: begin
-					if (sub8_csr_sft_i == 4'b0011 || sub8_csr_sft_i == 4'b0100) begin
-						if (lsu_ctrl.vaddr[1:0] == 2'b11) begin
-            	data_misaligned = 1'b1;
-          	end
-					end
-				end
         // byte -> is always aligned
         default: ;
       endcase
