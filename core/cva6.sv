@@ -1207,8 +1207,8 @@ module cva6
       .jvt_o                   (jvt),
       //RVFI
       .rvfi_csr_o              (rvfi_csr), 
-			.sub8_csr_sft_o					(sub8_csr_sft),
-			.sub8_csr_eft_o					(sub8_csr_eft)
+			.sft_o					(sub8_csr_sft),
+			.eft_o					(sub8_csr_eft)
   );
 
   // ------------------------
