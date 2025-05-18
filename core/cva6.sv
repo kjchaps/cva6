@@ -919,9 +919,7 @@ module cva6
       .rvfi_issue_pointer_o (rvfi_issue_pointer),
       .rvfi_commit_pointer_o(rvfi_commit_pointer),
       .rvfi_rs1_o           (rvfi_rs1),
-      .rvfi_rs2_o           (rvfi_rs2), 
-			.sub8_csr_sft_i			(sub8_csr_sft), 
-			.sub8_csr_eft_i			(sub8_csr_sft)
+      .rvfi_rs2_o           (rvfi_rs2)
   );
 
   // ---------
