@@ -2519,6 +2519,8 @@ module csr_regfile
   assign fflags_o = fcsr_q.fflags;
   assign frm_o = fcsr_q.frm;
   assign fprec_o = fcsr_q.fprec;
+	assign eft_o = fcsr_q.eft; 
+	assign sft_o = fcsr_q.sft; 
   //JVT outputs
   if (CVA6Cfg.RVZCMT) begin
     assign jvt_o.base = jvt_q.base;
