@@ -172,9 +172,9 @@ module csr_regfile
     //jvt output
     output jvt_t jvt_o,
 		// sub8 source format - EX STAGE
-		output logic [3:0] fpu_sub8_sft_o,
+		output logic [3:0] sft_o,
 		// sub8 destination format - EX STAGE
-		output logic [3:0] fpu_sub8_eft_o
+		output logic [3:0] eft_o
 );
 
   localparam logic [63:0] SMODE_STATUS_READ_MASK = ariane_pkg::smode_status_read_mask(CVA6Cfg);
