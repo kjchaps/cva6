@@ -59,7 +59,7 @@ module store_unit
     // Virtual address - TO_BE_COMPLETED
     output logic [CVA6Cfg.VLEN-1:0] vaddr_o,
     // RVFI information - RVFI
-    output logic [CVA6Cfg.PLEN-1:0] rvfi_mem_paddr_o,
+    output [CVA6Cfg.PLEN-1:0] rvfi_mem_paddr_o,
     // Transformed trap instruction out - TO_BE_COMPLETED
     output logic [31:0] tinst_o,
     // TO_BE_COMPLETED - TO_BE_COMPLETED
@@ -83,32 +83,15 @@ module store_unit
     // Data cache request - CACHES
     input dcache_req_o_t req_port_i,
     // Data cache response - CACHES
-    output dcache_req_i_t req_port_o, 
-		input  logic       [                      3:0] sub8_csr_sft_i // from EX_Stage
+    output dcache_req_i_t req_port_o
 );
 
   // align data to address e.g.: shift data to be naturally 64
   function automatic [CVA6Cfg.XLEN-1:0] data_align(logic [2:0] addr, logic [63:0] data);
     // Set addr[2] to 1'b0 when 32bits
-
-
-		logic [2:0] addr_tmp;
-		if (CVA6Cfg.DATA_WIDTH == 24) begin
-    	addr_tmp = {addr[2] && CVA6Cfg.IS_XLEN64, addr[1] && CVA6Cfg.IS_XLEN64, addr[0]};
-		end else begin
-    	addr_tmp = {(addr[2] && CVA6Cfg.IS_XLEN64), addr[1:0]};
-		end
+    logic [ 2:0] addr_tmp = {(addr[2] && CVA6Cfg.IS_XLEN64), addr[1:0]};
     logic [63:0] data_tmp = {64{1'b0}};
-		if (CVA6Cfg.DATA_WIDTH == 24) begin
-    	// 24-bit data requires shifting in multiples of 3 bytes
-    	case (addr_tmp[1:0]) 
-      	2'b00: data_tmp[23:0] = data[23:0]; // No shift
-      	2'b01: data_tmp[23:0] = {data[15:0], data[23:16]}; // Shift 8 bits, wrap
-      	2'b10: data_tmp[23:0] = {data[7:0], data[23:8]}; // Shift 16 bits, wrap
-      	default: data_tmp[23:0] = data[23:0]; // Shouldn't reach here
-    	endcase
-  	end 
-    else begin case (addr_tmp)
+    case (addr_tmp)
       3'b000: data_tmp[CVA6Cfg.XLEN-1:0] = {data[CVA6Cfg.XLEN-1:0]};
       3'b001:
       data_tmp[CVA6Cfg.XLEN-1:0] = {data[CVA6Cfg.XLEN-9:0], data[CVA6Cfg.XLEN-1:CVA6Cfg.XLEN-8]};
@@ -126,8 +109,7 @@ module store_unit
           default: data_tmp = {data[63:0]};
         endcase
       end
-    	endcase
-		end
+    endcase
     return data_tmp[CVA6Cfg.XLEN-1:0];
   endfunction
 
