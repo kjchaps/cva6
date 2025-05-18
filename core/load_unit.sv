@@ -78,8 +78,7 @@ module load_unit
     // Data cache request in - CACHES
     output dcache_req_i_t req_port_o,
     // Presence of non-idempotent operations in the D$ write buffer - CACHES
-    input logic dcache_wbuffer_not_ni_i,
-    input  logic       [                      3:0] sub8_csr_eft_i // from EX_Stage
+    input logic dcache_wbuffer_not_ni_i
 );
   enum logic [3:0] {
     IDLE,
@@ -494,7 +493,7 @@ module load_unit
 
   // prepare these signals for faster selection in the next cycle
   assign rdata_is_signed    =   ldbuf_rdata.operation inside {ariane_pkg::LW,  ariane_pkg::LH,  ariane_pkg::LB, ariane_pkg::HLV_W, ariane_pkg::HLV_H, ariane_pkg::HLV_B};
-  assign rdata_is_fp_signed =   ldbuf_rdata.operation inside {ariane_pkg::FLW, ariane_pkg::FLH, ariane_pkg::FLB, ariane_pkg:: FSFL};
+  assign rdata_is_fp_signed =   ldbuf_rdata.operation inside {ariane_pkg::FLW, ariane_pkg::FLH, ariane_pkg::FLB};
   assign rdata_offset       = ((ldbuf_rdata.operation inside {ariane_pkg::LW,  ariane_pkg::FLW, ariane_pkg::HLV_W}) & CVA6Cfg.IS_XLEN64) ? ldbuf_rdata.address_offset + 3 :
                                 ( ldbuf_rdata.operation inside {ariane_pkg::LH,  ariane_pkg::FLH, ariane_pkg::HLV_H})                     ? ldbuf_rdata.address_offset + 1 :
                                                                                                                          ldbuf_rdata.address_offset;
@@ -530,15 +529,6 @@ module load_unit
             ariane_pkg::FLB: begin
               result_o = {{CVA6Cfg.XLEN - 32 + 24{rdata_sign_bit}}, shifted_data[7:0]};
             end
-						ariane_pkg::FSFL: begin //FP8 and FP4 have use FLB
-							unique case (sub8_csr_eft_i) begin
-              	4'b0011: result_o = {{CVA6Cfg.XLEN - 32 + 8{rdata_sign_bit}}, shifted_data[23:0]};//FP6_E3M2;
-             		4'b0100: result_o = {{CVA6Cfg.XLEN - 32 + 8{rdata_sign_bit}}, shifted_data[23:0]};//FP6_E2M3;
-								default: begin
-              		result_o = shifted_data[CVA6Cfg.XLEN-1:0];
-            		end
-							endcase
-						end
             default: begin
               result_o = shifted_data[CVA6Cfg.XLEN-1:0];
             end
