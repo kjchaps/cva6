@@ -395,6 +395,7 @@ module fpu_wrap
 
 				//for min and max in decode decide if 001 or 000, then maybe share? or check encoding correct before sending
 				FSFMIN_MAX: begin
+					fpu_op_d = fpnew_pkg::MINMAX;
           fpu_rm_d = {1'b0, fpu_rm_i[1:0]};  // mask out AH encoding bit
           check_ah = 1'b1;  // AH has RM MSB encoding
 				end
