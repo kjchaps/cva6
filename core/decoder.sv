@@ -1444,8 +1444,8 @@ module decoder
             	imm_select = IIMM;
             	instruction_o.rs1 = instr.itype.rs1;
             	instruction_o.rd = instr.itype.rd;
-							\\here we check if EFT is FP4 or FP8, then use load byte
-							if (sub8_csr_eft_i == 4'b0001 || sub8_csr_eft_i == 4'b0010 || sub8_csr_eft_i == 4'b0101) instruction_o.op = ariane_pkg::FLB;
+							\\here we check if EFT is FP8, then use load byte
+							if (sub8_csr_eft_i == 4'b0001 || sub8_csr_eft_i == 4'b0010) instruction_o.op = ariane_pkg::FLB;
            		else instruction_o.op = ariane_pkg::FSFL; 
 
 						end
@@ -1455,8 +1455,8 @@ module decoder
             	imm_select = SIMM;
             	instruction_o.rs1 = instr.rtype.rs1;
             	instruction_o.rs2 = instr.rtype.rs2;
-							//here we check if EFT is FP4 or FP8, then use store byte.
-							if (sub8_csr_sft_i == 4'b0001 || sub8_csr_sft_i == 4'b0010 || sub8_csr_sft_i == 4'b0101) instruction_o.op = ariane_pkg::FSB;
+							//here we check if EFT is FP8, then use store byte.
+							if (sub8_csr_sft_i == 4'b0001 || sub8_csr_sft_i == 4'b0010 ) instruction_o.op = ariane_pkg::FSB;
            		else instruction_o.op = ariane_pkg::FSFS; 
 						end
 						else begin
