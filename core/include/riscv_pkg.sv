@@ -804,7 +804,7 @@ package riscv;
     csr_addr_t csr_decode;
   } csr_t;
 
- register (32-bit!)
+ // register (32-bit!)
   typedef struct packed {
     logic [31:23] reserved;  // reserved for L extension, return 0 otherwise
     logic [3:0]   eft;      //**stole 4 reserved bits for sub8 FP
