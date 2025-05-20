@@ -365,47 +365,14 @@ module fpu_wrap
           };  // mask out AH encoding bit - CLASS doesn't care anyways
           check_ah = 1'b1;  // AH has RM MSB encoding
         end
-
-
-				// Special case for SUB8 instructions
-  			if (fu_data_i.operation inside {FSFADD, FSFSUB, FSFMUL, FSFDIV, FSFCVT_F2F, FSFSGNJ}) begin
-					unique case (sub8_csr_sft_i)
-              4'b0001: fpu_srcfmt_d = fpnew_pkg::FP8;
-              4'b0010: fpu_srcfmt_d = fpnew_pkg::FP8_E4M3;
-            	default: ;  // Do nothing
-           endcase
-					unique case (sub8_csr_eft_i)
-              4'b0001: fpu_dstfmt_d = fpnew_pkg::FP8;
-              4'b0010: fpu_dstfmt_d = fpnew_pkg::FP8_E4M3;
-            	default: ;  // Do nothing
-           endcase
-				end
-
-
-
-
-				//for min and max in decode decide if 001 or 000, then maybe share? or check encoding correct before sending
+        //for min and max in decode decide if 001 or 000, then maybe share? or check encoding correct before sending
 				FSFMIN_MAX: begin
 					fpu_op_d = fpnew_pkg::MINMAX;
           fpu_rm_d = {1'b0, fpu_rm_i[1:0]};  // mask out AH encoding bit
           check_ah = 1'b1;  // AH has RM MSB encoding
 				end
 
-
-					// Special case for SUB8 MIN MAX instructions
-  			if (fu_data_i.operation inside {FSFMIN_MAX}) begin
-					unique case (sub8_csr_sft_i)
-              4'b0001: begin
-								fpu_srcfmt_d = fpnew_pkg::FP8;
-								fpu_dstfmt_d = fpnew_pkg::FP8;
-							end
-              4'b0010: begin
-								fpu_srcfmt_d = fpnew_pkg::FP8_E4M3;
-								fpu_dstfmt_d = fpnew_pkg::FP8_E4M3;
-              end
-            	default: ;  // Do nothing
-           endcase
-				end
+				
 
         // Vectorial Minimum - set up scalar encoding in rm
         VFMIN: begin
@@ -497,6 +464,41 @@ module fpu_wrap
         default: ;  //nothing
       endcase
 
+      // Special case for SUB8 instructions
+  			if (fu_data_i.operation inside {FSFADD, FSFSUB, FSFMUL, FSFDIV, FSFCVT_F2F, FSFSGNJ}) begin
+					unique case (sub8_csr_sft_i)
+              4'b0001: fpu_srcfmt_d = fpnew_pkg::FP8;
+              4'b0010: fpu_srcfmt_d = fpnew_pkg::FP8_E4M3;
+            	default: ;  // Do nothing
+           endcase
+					unique case (sub8_csr_eft_i)
+              4'b0001: fpu_dstfmt_d = fpnew_pkg::FP8;
+              4'b0010: fpu_dstfmt_d = fpnew_pkg::FP8_E4M3;
+            	default: ;  // Do nothing
+           endcase
+				end
+
+
+
+
+				
+
+
+					// Special case for SUB8 MIN MAX instructions
+  			if (fu_data_i.operation inside {FSFMIN_MAX}) begin
+					unique case (sub8_csr_sft_i)
+              4'b0001: begin
+								fpu_srcfmt_d = fpnew_pkg::FP8;
+								fpu_dstfmt_d = fpnew_pkg::FP8;
+							end
+              4'b0010: begin
+								fpu_srcfmt_d = fpnew_pkg::FP8_E4M3;
+								fpu_dstfmt_d = fpnew_pkg::FP8_E4M3;
+              end
+            	default: ;  // Do nothing
+           endcase
+				end
+      
       // Scalar AH encoding fixing
       if (!fpu_vec_op_d && check_ah) if (fpu_rm_i[2]) fpu_dstfmt_d = fpnew_pkg::FP16ALT;
 
